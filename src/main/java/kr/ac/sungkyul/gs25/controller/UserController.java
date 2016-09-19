@@ -47,7 +47,7 @@ public class UserController {
 			@RequestParam(value="password", required=false, defaultValue="") String password){
 		
 		UserVo authUser =  userService.login(email,  password);
-		
+		System.out.println(authUser);
 		if(authUser == null){
 			return "redirect:/user/loginform";
 		}

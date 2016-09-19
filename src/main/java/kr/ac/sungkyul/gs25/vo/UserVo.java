@@ -11,6 +11,7 @@ public class UserVo {
 	private String address;
 	private String phone;
 	private Integer point;
+	private Long store_no;
 	
 	public Long getNo() {
 		return no;
@@ -66,9 +67,17 @@ public class UserVo {
 	public void setPoint(Integer point) {
 		this.point = point;
 	}
+	
+	public Long getStore_no() {
+		return store_no;
+	}
+	public void setStore_no(Long store_no) {
+		this.store_no = store_no;
+	}
 	@Override
 	public String toString() {
 		return "UserVo [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password + ", birth="
-				+ birth + ", gender=" + gender + ", address=" + address + ", phone=" + phone + ", point=" + point + "]";
+				+ birth + ", gender=" + gender + ", address=" + address + ", phone=" + phone + ", point=" + point
+				+ ", store_no=" + store_no + "]";
 	}
 }

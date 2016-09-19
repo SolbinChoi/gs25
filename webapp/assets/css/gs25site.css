@@ -1,8 +1,10 @@
 @CHARSET "UTF-8";
+@import url("/gs25/assets/font/nanumbarungothicbold/nanum-barun-gothic-bold.css");
+@import url("/gs25/assets/font/nanumbarungothicregular/nanum-barun-gothic-regular.css");
 
 /* reset */
 *				{ margin:0; padding:0 }
-body			{ font:0.9em "맑은 고딕", 돋움, 굴림; }
+body			{ font:0.9em "맑은 고딕", 돋움, 굴림; font-family:NanumBarunGothic !important;}
 ul, ol, li			{ list-style-type: none }
 
 /* layout */
