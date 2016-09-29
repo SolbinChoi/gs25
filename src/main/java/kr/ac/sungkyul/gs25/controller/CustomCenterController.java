@@ -37,7 +37,7 @@ public class CustomCenterController {
 		Map<String, Object> map = customservice.list(page, keyword);
 		model.addAttribute("map", map);
 
-		return "customcenter/customboardlist";
+		return "/Main_Page/custom_board";
 	}
 
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
@@ -47,13 +47,13 @@ public class CustomCenterController {
 			return "redirect:/main";
 		}
 
-		return "/customcenter/write";
+		return "/Main_Page/custom_write";
 	}
 
 	@RequestMapping("/write")
 	public String write(@ModelAttribute CustomBoardVo vo, HttpSession session, MultipartFile file) throws Exception {
 
-		System.out.println(file.getOriginalFilename());
+		// System.out.println(file.getOriginalFilename());
 
 		if (session == null) {
 			return "redirect:/main";
@@ -64,14 +64,16 @@ public class CustomCenterController {
 			return "redirect:/main";
 		}
 		vo.setUserNo(authUser.getNo());
-		System.out.println(vo);
 		customservice.write(vo, file);
 
 		return "redirect:/custom/list";
 	}
 
 	@RequestMapping("/delete")
-	public String delete(HttpSession session, @RequestParam("no") Long no, @ModelAttribute CustomBoardVo vo) {
+	public String delete(HttpSession session, 
+			@RequestParam("groupNo") Integer no, 
+			@RequestParam("groupOrderNo") Integer orderno,
+			@ModelAttribute CustomBoardVo vo) {
 
 		if (session == null) {
 			return "redirect:/main";
@@ -81,35 +83,65 @@ public class CustomCenterController {
 		if (authUser == null) {
 			return "redirect:/main";
 		}
-		vo.setNo(no);
-
-		customservice.delete(vo);
+		customservice.delete(no,orderno); // 첨부파일 삭제
+		
+		customservice.delete(vo); // 게시물 삭제
 
 		return "redirect:/custom/list";
 	}
 
 	@RequestMapping("/viewform")
 	public String viewfrom(HttpSession session,
-			@RequestParam(value = "no", required = true, defaultValue = "1") Long no, Model model) {
+			@RequestParam(value = "no", required = true, defaultValue = "1") Long no, 
+			@RequestParam("groupNo") Integer groupNo,
+			Model model) {
 
 		if (session == null) {
 			return "redirect:/main";
 		}
+		
+		UserVo authUser=(UserVo)session.getAttribute("authUser");
+		if(authUser==null){
+			return "redirect:/main";
+		}
+		
+		Long authno = authUser.getNo();
+		if( authno ==null){
+			return "redirect:/main/list";
+		}
+		CustomBoardVo DeterminVo =customservice.userno(groupNo); // 사용자 그룹 번호 판별
+		Long userno=DeterminVo.getUserNo();
+		
+		CustomBoardVo vo = customservice.boardinfo(no); // 해당 번호의 게시물 정보
+		AttachFileVO attachFileVO = customservice.selectAttachFileByNO(no); // 해당 번호의 파일 모든 정보(view)
 
-		CustomBoardVo vo = customservice.boardinfo(no);
-
-		if (vo == null) {
+		if (vo == null) { 
 			return "redirect:/custom/list";
 		}
+		
+		customservice.viewcountup(no); // 조회수 증가
+		
+	    if(authno==1){ //사용자가 관리자일 때
+	    	vo = customservice.boardinfo(no);
+			attachFileVO = customservice.selectAttachFileByNO(no);
+			model.addAttribute("vo", vo);
+			model.addAttribute("attachFileVO", attachFileVO);
+			return "/Main_Page/custom_view";
+		}
+	    
+		if(authno!=userno){ //로그인한 사용자번호와 작성자의 번호가 다를때 권한 위배 표시
+			return "redirect:/custom/right";
+		}
+		
 		model.addAttribute("vo", vo);
-
-		customservice.viewcountup(no);
-
-		return "/customcenter/view";
+		model.addAttribute("attachFileVO", attachFileVO);
+		return "/Main_Page/custom_view";
 	}
 
 	@RequestMapping("/modifyform")
-	public String modifyform(HttpSession session, @RequestParam("no") Long no, Model model) {
+	public String modifyform(HttpSession session, 
+			@RequestParam("no") Long no, 
+			Model model) {
 
 		if (session == null) {
 			return "redirect:/main";
@@ -123,11 +155,13 @@ public class CustomCenterController {
 		CustomBoardVo vo = customservice.boardinfo(no);
 		model.addAttribute("vo", vo);
 
-		return "/customcenter/modify";
+		return "/Main_Page/custom_modify";
 	}
 
 	@RequestMapping("/modify")
-	public String modify(HttpSession session, @RequestParam("no") Long no, @ModelAttribute CustomBoardVo vo) {
+	public String modify(HttpSession session, 
+			@RequestParam("no") Long no, 
+			@ModelAttribute CustomBoardVo vo) {
 
 		if (session == null) {
 			return "redirect:/main";
@@ -137,6 +171,7 @@ public class CustomCenterController {
 		if (authUser == null) {
 			return "redirect:/main";
 		}
+		
 		vo.setNo(no);
 
 		customservice.modify(vo);
@@ -145,7 +180,9 @@ public class CustomCenterController {
 	}
 
 	@RequestMapping("/replyform")
-	public String replyform(HttpSession session, @RequestParam("no") Long no, Model model) {
+	public String replyform(HttpSession session, 
+			@RequestParam("no") Long no,
+			Model model) {
 
 		if (session == null) {
 			return "redirect:/main";
@@ -156,18 +193,17 @@ public class CustomCenterController {
 			return "redirect:/main";
 		}
 
-		CustomBoardVo vo = customservice.boardinfo(no);
+		CustomBoardVo vo = customservice.boardinfo(no); // 해당 번호의 게시물 정보
 		model.addAttribute("vo", vo);
-
 		System.out.println(vo);
-
-		return "/customcenter/reply";
+		return "/Main_Page/custom_reply";
 	}
 	
 	@RequestMapping("/reply")
 	public String reply(
 			HttpSession session,
-			@ModelAttribute CustomBoardVo vo){
+			@ModelAttribute CustomBoardVo vo,
+			MultipartFile file) throws Exception{
 		
 		if(session==null){
 			return "redirect:/main";
@@ -178,18 +214,18 @@ public class CustomCenterController {
 			return "redirect:/main";
 		}
 		
-		int depth=vo.getDepth()+1;
-		int groupOrderno=vo.getGroupOrderNo()+1;
-		int groupNo=vo.getGroupNo();
+		int depth=vo.getDepth()+1; // 글 깊이 증가
+		int groupOrderno=vo.getGroupOrderNo()+1; // 그룹 내 순서 증가
+		int groupNo=vo.getGroupNo(); // 그룹 번호 저장
 		
-
-		vo.setDepth(depth);
-		vo.setGroupOrderNo(groupOrderno);
+		// 증가 세팅
+		vo.setDepth(depth); 
+		vo.setGroupOrderNo(groupOrderno); 
+		vo.setGroupNo(groupNo);
 		
+		customservice.updatereplyCount(groupNo, groupOrderno); // 증가 세팅
 		
-		customservice.updatereplyCount(groupNo, groupOrderno);
-		
-		customservice.reply(vo);
+		customservice.reply(vo, file);
 		
 		
 		return "redirect:/custom/list";
@@ -197,32 +233,28 @@ public class CustomCenterController {
 	
 	@RequestMapping("/right")
 	public String right(){
-		return "/customcenter/right";
+		return "/Main_Page/custom_right";
 	}
 	
 	//파일다운로드
-		@RequestMapping(value = "download", method = RequestMethod.GET)
-		public void downloadFile(int fNO, HttpServletResponse res) throws Exception {
-			System.out.println(fNO);
+	@RequestMapping(value = "download", method = RequestMethod.GET)
+	public void downloadFile(Long fNO, HttpServletResponse res) throws Exception {
 			
+		AttachFileVO attachFileVO = customservice.selectAttachFileByFNO(fNO);
 			
-			AttachFileVO attachFileVO = customservice.selectAttachFileByFNO(fNO);
-			
-			String saveName = attachFileVO.getSaveName();
-			String orgName = attachFileVO.getOrgName();
+		String saveName = attachFileVO.getSaveName(); // 저장할 파일 이름
+		String orgName = attachFileVO.getOrgName(); // 원래 파일 이름
 			    
-			    
-			    
-			res.setContentType("application/download");
-			res.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(orgName,"UTF-8") +"\"");
-			OutputStream resOut = res.getOutputStream();
+		res.setContentType("application/download");
+		res.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(orgName,"UTF-8") +"\"");
+		OutputStream resOut = res.getOutputStream();
 			
-			FileInputStream fin = new FileInputStream("C:\\upload\\"+saveName);
-			FileCopyUtils.copy(fin, resOut);
+		FileInputStream fin = new FileInputStream("C:\\upload\\"+saveName);
+		FileCopyUtils.copy(fin, resOut);
 				
-			fin.close();
+		fin.close();
 			    
-		}
+	}
 	
 	
 

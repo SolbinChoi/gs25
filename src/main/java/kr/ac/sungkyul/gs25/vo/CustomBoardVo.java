@@ -15,6 +15,8 @@ public class CustomBoardVo {
 	private String UserName;
 	private Integer orderNo;
 	private String keyword;
+	
+	
 	public Long getNo() {
 		return no;
 	}

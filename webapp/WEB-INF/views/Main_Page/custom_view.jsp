@@ -11,9 +11,7 @@
 	pageContext.setAttribute("newLine", "\n");
 %>
 <title>gs25_view</title>
-<link href="/gs25/assets/css/customboard.css" rel="stylesheet"
-	type="text/css">
-
+<link href="/gs25/assets/css/customboard.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -43,8 +41,16 @@
 									</div>
 								</td>
 							</tr>
+							<tr>
+								<td class="label">첨부파일</td>
+							<td id="attachFile" data-fno="${attachFileVO.fNO }">${attachFileVO.orgName }</td>
+							</tr>
 						</table>
-
+						
+						<img alt="이미지 없음" src="download?fNO=${attachFileVO.fNO }">
+						<div id="cma_image" style="width:95%; max-width:100%; border:1px solid #c0c0c0;">
+						</div>
+						
 						<div class="bottom">
 							<a href="/gs25/custom/list">글목록</a>
 							<c:if test='${not empty authUser }'>
@@ -64,7 +70,14 @@
 
 	</div>
 
-
+ <script>
+/*--------첨부파일 다운로드--- -----------*/
+$("#attachFile").on("click", function(event){
+	var fNO = $(this).data("fno");
+	var url = "download?fNO=" + fNO; 
+	window.open(url);
+});
+</script>
 
 </body>
 </html>

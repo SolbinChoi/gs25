@@ -19,7 +19,7 @@ public class GuestbookService {
 	private final int LIST_PAGESIZE = 5; // 리스팅되는 게시물의 수
 	private final int LIST_BLOCKSIZE = 5; // 페이지 리스트에서 표시되는 페이지 수
 	
-	public Map<String, Object> list(Long page){
+	public Map<String, Object> list(Long page, Long store_no){
 		long totalCount= guestbookDao.getCal();  // 전체 게시물 갯수
 		long pageCount = (long) Math.ceil((double) totalCount / LIST_PAGESIZE); // 페이지 갯수
 	    long blockCount = (long) Math.ceil((double) pageCount / LIST_BLOCKSIZE); // 블록 갯수
@@ -40,7 +40,7 @@ public class GuestbookService {
 	    long prevPage = (currentBlock > 1) ? (currentBlock - 1) * LIST_BLOCKSIZE : 0;
 	    long nextPage = (currentBlock < blockCount) ? currentBlock * LIST_BLOCKSIZE + 1 : 0;
 	    
-	    List<GuestbookVo> list = guestbookDao.getList(page, LIST_PAGESIZE);
+	    List<GuestbookVo> list = guestbookDao.getList(page, LIST_PAGESIZE, store_no);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sizeList", LIST_PAGESIZE); // 리스트 되는 갯 수
@@ -53,9 +53,8 @@ public class GuestbookService {
 		map.put("list", list); // 리스트 정보
 		map.put("totalCount", totalCount); // 전체 게시글 정보
 		
-		
+
 		return map;
-		
 	}
 	
 	public void write(GuestbookVo vo){

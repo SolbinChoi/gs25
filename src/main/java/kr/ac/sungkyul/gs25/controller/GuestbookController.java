@@ -18,22 +18,23 @@ import kr.ac.sungkyul.gs25.vo.GuestbookVo;
 import kr.ac.sungkyul.gs25.vo.UserVo;
 
 @Controller
-@RequestMapping("/guestbook")
+@RequestMapping("/Sub_Page")
 public class GuestbookController {
 	@Autowired
 	private GuestbookService guestbookService;
 	
 	@RequestMapping("/list")
 	public String list(Model model, 
-			@RequestParam(value="p",required=true, defaultValue="1") Long page){
-		Map<String, Object> map = guestbookService.list(page); // email이랑 방명록을 추가
+			@RequestParam(value="p",required=true, defaultValue="1") Long page,
+			@RequestParam(value="store_no",required=true, defaultValue="") Long store_no){
+		Map<String, Object> map = guestbookService.list(page, store_no); // email이랑 방명록을 추가
 		model.addAttribute("map", map);
 		
-		return "/guestbook/list";
+		return "/Sub_Page/guestbook_list";
 	}
 	@RequestMapping(value="/write", method=RequestMethod.POST)
 	public String write(@ModelAttribute GuestbookVo vo,
-			@RequestParam(value="store_no",required=true, defaultValue="1") Long store_no,
+			@RequestParam(value="store_no",required=true, defaultValue="") Long store_no,
 			HttpSession session){
 		if(session == null){
 			return "redirect:/main";
@@ -45,11 +46,11 @@ public class GuestbookController {
 		vo.setUser_no(authUser.getNo());
 		vo.setStore_no(store_no);
 		guestbookService.write(vo);
-		return "redirect:/guestbook/list";
+		return "redirect:/Sub_Page/list";
 	}
 	@RequestMapping("/delete")
 	public String delete(@ModelAttribute GuestbookVo vo){
 		guestbookService.delete(vo);
-		return "redirect:/guestbook/list";		
+		return "redirect:/Sub_Page/list";		
 	}
 }

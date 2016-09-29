@@ -24,7 +24,7 @@
 		<div class="market_list">
 		<div class="markey_list_sub">
 			<ul class="market_list_area">
-				<li><a href="#" class="on">서울</a></li>
+				<li><a href="/gs25/Sub_Page/sub_index?store_no=4" class="on">서울</a></li>
 				<li><a href="#">경기</a></li>
 				<li><a href="#">인천</a></li>
 				<li><a href="#">강원</a></li>

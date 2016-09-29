@@ -1,11 +1,14 @@
 package kr.ac.sungkyul.gs25.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.sungkyul.gs25.dao.CustomCenterDao;
@@ -66,20 +69,55 @@ public class CustomCenterService {
 	}
 
 	public void write(CustomBoardVo vo, MultipartFile file) throws Exception {
-		customdao.insert(vo);
+		Long no = customdao.insert(vo); // 게시판 내용 삽입 후 파일을 저장하기 위해 번호를 외래키로 받아와
+		CustomBoardVo vo1 = customdao.get(no); // 외래키를 가지고 게시판의 정보를 가져와
+		int groupno=vo1.getGroupNo(); // 그룹번호 얻어오기
+		int orderno=vo1.getGroupOrderNo(); // 그룹 내 번호 얻어오기
+
+		//3.orgName
+		String orgName ="이미지";
+		
+		//file.getOriginalFilename();
+		
+		//4.fileSize 파일 크기
+		long fileSize =file.getSize();
+		
+		//5.saveName 저장될 이름
+		String saveName = UUID.randomUUID().toString()+ "_" + orgName;
+		
+		//6.path 경로
+		String path ="c:\\upload";
+		
+		
+		AttachFileVO attachFileVO = new AttachFileVO();
+		attachFileVO.setNo(no);
+		attachFileVO.setPath(path);
+		attachFileVO.setOrgName(orgName);
+		attachFileVO.setSaveName(saveName);
+		attachFileVO.setFileSize(fileSize);
+		attachFileVO.setGroupno(groupno);
+		attachFileVO.setOrderno(orderno);
+										
+		customdao.insertAttachFile(attachFileVO);
+		
+		
+		File target = new File(path, saveName);
+		FileCopyUtils.copy(file.getBytes(),target);
 	}
 
+	public void delete(Integer no, int orderno){ // group과 order 번호
+		customdao.delete(no, orderno); // n 이상의 그룹 내 번호를 지워주기 위함
+	}
 	public void delete(CustomBoardVo vo) {
 		customdao.delete(vo);
 	}
 
 	public CustomBoardVo boardinfo(Long no) {
-
 		CustomBoardVo vo = customdao.get(no);
 		return vo;
 	}
 
-	public void viewcountup(Long no) {
+	public void viewcountup(Long no) { // 조회수
 
 		customdao.updateViewCount(no);
 	}
@@ -89,17 +127,65 @@ public class CustomCenterService {
 
 	}
 	
-	public void updatereplyCount(int groupno, int ordernumber){
-		
+	public void updatereplyCount(int groupno, int ordernumber){ // 답글 갯 수 증가
 		customdao.updatereplyCount(groupno, ordernumber);
 	}
 	
-	public void reply(CustomBoardVo vo){
-		customdao.insert(vo);
+	public void reply(CustomBoardVo vo, MultipartFile file) throws Exception{
+		Long no=customdao.reply(vo); // 외래키
+		CustomBoardVo vo1 = customdao.get(no);
+		int groupno=vo1.getGroupNo(); //그룹 번호 얻기
+		int orderno=vo1.getGroupOrderNo(); // 그룹 내 번호 얻기
+		
+		  //3.orgName
+		String orgName ="이미지";
+		
+	  //file.getOriginalFilename();
+		
+		//4.fileSize
+		long fileSize =file.getSize();
+		
+		//5.saveName
+		String saveName = UUID.randomUUID().toString()+ "_" + orgName;
+		
+		//6.path 
+		String path ="c:\\upload";
+		
+		
+		AttachFileVO attachFileVO = new AttachFileVO();
+		attachFileVO.setNo(no);
+		attachFileVO.setPath(path);
+		attachFileVO.setOrgName(orgName);
+		attachFileVO.setSaveName(saveName);
+		attachFileVO.setFileSize(fileSize);
+		attachFileVO.setGroupno(groupno);
+		attachFileVO.setOrderno(orderno);
+				
+		customdao.insertAttachFile(attachFileVO);
+		
+		
+		File target = new File(path, saveName);
+		FileCopyUtils.copy(file.getBytes(),target);
+
 	}
 	
-	public AttachFileVO selectAttachFileByFNO(int fNO){
+	public AttachFileVO selectAttachFileByNO(Long no){ // 외래키로 첨부파일의 모든 정보를 가져옴(view)
+		return customdao.selectAttachFileByNO(no);
+	}
+	
+	public AttachFileVO selectAttachFileByFNO(Long fNO){ // 기본키로 첨부파일의 모든 정보를 가져옴(download)
 		return customdao.selectAttachFileByFNO(fNO);
+	}
+	
+	public int getgroupno(AttachFileVO vo){
+		int groupno=customdao.getgroupno(vo);
+		// 첨부 파일의 그룹 번호 반환
+		return groupno; 
+	}
+	
+	public CustomBoardVo userno(int groupNo) { // 그룹 번호를 가지고 글 깊이가 1인 사용자 번호를 얻기 위해
+		CustomBoardVo vo  = customdao.getList(groupNo);
+		return vo;
 	}
 	
 	

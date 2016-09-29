@@ -35,8 +35,8 @@ public class CustomCenterDao {
 		try {
 			conn=dataSource.getConnection();
 			String sql = (keyword ==null || "".equals(keyword))? 
-		    "select * from(select c.*,rownum rn from(select a.no,a.title,b.name,a.user_no,a.view_count,to_char(a.reg_date, 'yyyy-mm-dd pm hh:mi:ss'),a.depth from boards a, users b where a.user_no=b.no order by group_no desc, order_no asc) c) where ?<=rn and rn<=?"
-			: "select * from(select c.*,rownum rn from(select no,name,address from store where name like ? or address like ?) c) where ?<=rn and rn<=?";
+		    "select * from(select c.*,rownum rn from(select a.no,a.title,b.name,a.user_no,a.view_count,to_char(a.reg_date, 'yyyy-mm-dd pm hh:mi:ss'),a.depth,a.GROUP_NO,a.ORDER_NO from boards a, users b where a.user_no=b.no order by group_no desc, order_no asc) c) where ?<=rn and rn<=?"
+			: "select * from(select c.*,rownum rn from(select a.no,a.title,b.name,a.user_no,a.view_count,to_char(a.reg_date, 'yyyy-mm-dd pm hh:mi:ss'),a.depth,a.GROUP_NO,a.ORDER_NO from boards a, users b where a.user_no=b.no and (title like ? or content like ?) order by group_no desc, order_no asc) c) where ?<=rn and rn<=?";
 				
 			pstmt = conn.prepareStatement(sql);
 			
@@ -65,7 +65,8 @@ public class CustomCenterDao {
 				Integer viewCount = rs.getInt(5);
 				String regDate = rs.getString(6);
 				Integer depth = rs.getInt(7);
-			
+				Integer groupno = rs.getInt(8);
+				Integer ordeno = rs.getInt(9);
 				
 			     CustomBoardVo vo=new CustomBoardVo();
 			     vo.setNo(no);
@@ -75,7 +76,8 @@ public class CustomCenterDao {
 			     vo.setCount(viewCount);
 			     vo.setDate(regDate);
 			     vo.setDepth(depth);
-			     
+			     vo.setGroupNo(groupno);
+			     vo.setGroupOrderNo(ordeno);
 				
 
 				list.add(vo);
@@ -146,81 +148,67 @@ public class CustomCenterDao {
 		return totalCount;
 
 	}
+	public Long insert(CustomBoardVo vo) { // 처음 삽입
+		sqlSession.insert("board.insertBoard", vo);
+		return vo.getNo();
+	}
 	
-	public int insert(CustomBoardVo vo) {
-		int count = 0;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
+	public Long reply(CustomBoardVo vo) { // 답글 삽입
+		sqlSession.insert("board.replyBoard", vo);
+		return vo.getNo();
+	}
 
-			conn=dataSource.getConnection();
-
-			// 3. statement 생성 ?-> 값이 바인딩 된다.
-			String sql = (vo.getGroupNo() == null)
-					? "insert into boards VALUES(seq_boards.nextval,?,?,1,nvl((select max(group_no) from boards), 0)+1,1,1,sysdate,?)"
-					: "insert into boards values(seq_boards.nextval, ?, ?, 0, ?, ?, ?, sysdate,?)";
-			pstmt = conn.prepareStatement(sql);
-
-			// nvl((select max(group_no) from board),0+1)
-
-			if (vo.getGroupNo() == null) {
-				// 4. 바인딩 타이틀,컨텐 츠,번호
-				pstmt.setString(1, vo.getTitle());
-				pstmt.setString(2, vo.getContent());
-				pstmt.setLong(3, vo.getUserNo());
-			} else {
-
-				pstmt.setString(1, vo.getTitle());
-				pstmt.setString(2, vo.getContent());
-				pstmt.setInt(3, vo.getGroupNo());
-				pstmt.setInt(4, vo.getGroupOrderNo());
-				pstmt.setInt(5, vo.getDepth());
-				pstmt.setLong(6, vo.getUserNo());
-
-			}
-
-			// 5. 쿼리 실행
-			pstmt.executeUpdate(); // pstmt.executeUpdate(sql) ->sql문을 줄
-									// 필요가 없다
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// 6. 자원정리
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error : " + e);
-
-			}
-
-		}
-		return count;
-
-		}
-	
-	public void delete(CustomBoardVo vo) {
+	public void delete(int no, int orderno) { // 첨부파일 삭제
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			conn=dataSource.getConnection();
+			conn = dataSource.getConnection();
 
-			String sql = "delete from boards where no=? ";
+			String sql = "delete from boardsfile where groupno=? and orderno>=? ";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setLong(1, vo.getNo());
+			pstmt.setLong(1, no);
+			pstmt.setInt(2, orderno);
 
 			// 5. sql 실행
 			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("연결 오류 : " + e);
+		} finally {
+			try {
+
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error : " + e);
+			}
+		}
+
+	}
+	public void delete(CustomBoardVo vo) { // 고객센터 삭제
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn=dataSource.getConnection();
+
+			String sql = "delete from boards where GROUP_NO=? and ORDER_NO>=? ";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+			pstmt.setInt(1, vo.getGroupNo());
+			pstmt.setInt(2, vo.getGroupOrderNo());
+
+			// 5. sql 실행
+			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			System.out.println("연결 오류 : " + e);
 		} finally {
@@ -239,7 +227,7 @@ public class CustomCenterDao {
 
 	}
 	
-	public CustomBoardVo get(Long no1) {
+	public CustomBoardVo get(Long no1) { // 외래키를 가지고 게시판의 정보를 가져와
 
 		CustomBoardVo vo = null;
 		Connection conn = null;
@@ -285,7 +273,7 @@ public class CustomCenterDao {
 
 	}
 	
-	public void updateViewCount(Long no) {
+	public void updateViewCount(Long no) { // 조회수 증가
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -295,6 +283,7 @@ public class CustomCenterDao {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setLong(1, no);
+			
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -313,7 +302,7 @@ public class CustomCenterDao {
 		}
 	}
 	
-	public void update(CustomBoardVo vo) {
+	public void update(CustomBoardVo vo) { // 수정
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -350,7 +339,7 @@ public class CustomCenterDao {
 		}
 	}
 	
-	public void updatereplyCount(int groupNo, int orderNo) {
+	public void updatereplyCount(int groupNo, int orderNo) { // 답글의 그룹 번호와 그룹 내 번호 설정
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -380,7 +369,7 @@ public class CustomCenterDao {
 		}
 	}
 	
-	public AttachFileVO selectAttachFileByFNO(int fNO) {
+	public AttachFileVO selectAttachFileByFNO(Long fNO) { // (download)
 		return sqlSession.selectOne("board.selectAttachFileByFNO", fNO);
 	}
 	
@@ -389,11 +378,57 @@ public class CustomCenterDao {
 	}
 
 
-	public AttachFileVO selectAttachFileByNO(int no) {
+	public AttachFileVO selectAttachFileByNO(Long no) { // 게시판 해당 번호의 파일 정보(view)
 		return sqlSession.selectOne("board.selectAttachFileByNO", no);
 	}
+	public int getgroupno(AttachFileVO vo) { // 첨부파일 내 그룹번호
+		sqlSession.selectList("board.list");
+		return vo.getGroupno();
+	}
+	public CustomBoardVo getList(int groupNo) { // 해당 게시물의 사용자번호
 
+		CustomBoardVo vo= null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
+		try {
+			conn = dataSource.getConnection();
+
+			String sql = "SELECT user_no FROM BOARDS WHERE group_no = ? and depth = 1";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, groupNo);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Long userno = rs.getLong(1);
+
+				vo =new CustomBoardVo();
+				vo.setUserNo(userno);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println("error : " + e);
+		} finally {
+			try {
+
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error : " + e);
+			}
+		}
+		return vo;
+	}
 	
 }
 

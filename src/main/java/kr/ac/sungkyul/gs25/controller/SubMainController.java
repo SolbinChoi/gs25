@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/hy")
-public class testController {
-
-	@RequestMapping("/test")
-	public String test(){
-		return "/product/productlist";
+@RequestMapping("/Sub_Page")
+public class SubMainController {
+	@RequestMapping("/sub_index")
+	public String SubMain(){
+		
+		return "/Sub_Page/sub_index";
 	}
 }

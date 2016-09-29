@@ -37,7 +37,7 @@
 									width=100px />
 							</div>
 							<div id=fresh_wrap>
-								<p id=highlight>Fresh & Refresh, GS25</p>
+								<p id="highlight">Fresh & Refresh, GS25</p>
 								<p>
 									신선함으로 일상을 충전하고 활력을 얻는 공간, 고객의 하루가 시작되고 머무르고 마무리되는 </p>
 									<p>Fresh한 경험을 통해 일상을 Refresh!!</p>
@@ -47,7 +47,7 @@
 						
 					</div>
 
-				<div id="month_average">
+						<div id="month_average">
 							<img src="/gs25/assets/images/introduce/8000.png" />
 							</div>
 

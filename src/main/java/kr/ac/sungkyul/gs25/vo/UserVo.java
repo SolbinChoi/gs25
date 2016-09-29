@@ -11,7 +11,9 @@ public class UserVo {
 	private String address;
 	private String phone;
 	private Integer point;
+	private String position;
 	private Long store_no;
+	
 	
 	public Long getNo() {
 		return no;
@@ -67,7 +69,12 @@ public class UserVo {
 	public void setPoint(Integer point) {
 		this.point = point;
 	}
-	
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
 	public Long getStore_no() {
 		return store_no;
 	}
@@ -78,6 +85,8 @@ public class UserVo {
 	public String toString() {
 		return "UserVo [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password + ", birth="
 				+ birth + ", gender=" + gender + ", address=" + address + ", phone=" + phone + ", point=" + point
-				+ ", store_no=" + store_no + "]";
+				+ ", position=" + position + ", store_no=" + store_no + "]";
 	}
+
+	
 }

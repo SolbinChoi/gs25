@@ -26,7 +26,7 @@
 			expression="org.springframework.stereotype.Component" />
 	</context:component-scan>
 
-<!-- user / password가 들어간다. -->
+	<!-- user / password가 들어간다. -->
 	<!-- oracle datasource -->
 	<bean id="oracleDatasource" class="oracle.jdbc.pool.OracleDataSource"
 		destroy-method="close">
@@ -46,8 +46,20 @@
 	<!-- MyBatis SqlSessionTemplate -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>	
+	
+	<bean id="mailSender" class ="org.springframework.mail.javamail.JavaMailSenderImpl" >
+	    <property name="host" value="smtp.gmail.com" />
+	    <property name="port" value="587" />
+	    <property name="username" value="jechoi27" />
+	    <property name="password" value="passgs25mail" />
+	    <property name="javaMailProperties">
+	    <props>
+	        <prop key="mail.smtp.starttls.enable">true</prop>
+	        <prop key="mail.smtp.auth">true</prop>
+	    </props>
+	    </property>
 	</bean>
-
 	
 
 </beans> 

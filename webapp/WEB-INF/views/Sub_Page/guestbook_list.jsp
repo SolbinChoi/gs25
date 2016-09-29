@@ -14,10 +14,10 @@
 </head>
 <body>
 	<div id="container">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
 		<div id="content">
 			<div id="guestbook">
-				<form action="/gs25/guestbook/write?store_no=1" method="post">
+				<form action="/gs25/Sub_Page/write?store_no=4" method="post">
 				
 				<h4 id="br">
 					전체 글수 : <span>${map.totalCount }</span>
@@ -57,7 +57,7 @@
 									<td>
 									<c:choose>
 									<c:when test='${not empty authUser && authUser.no == vo.user_no }'>
-										<a href="/gs25/guestbook/delete?no=${vo.no }">삭제</a>
+										<a href="/gs25/Sub_Page/delete?no=${vo.no }">삭제</a>
 									</c:when>
 									<c:otherwise>
 										&nbsp;
@@ -89,7 +89,7 @@
 				<div class="pager">
 					<ul>
 						<c:if test="${map.prevPage > 0 }">
-							<li><a href="/gs25/guestbook/list?p=${map.prevPage }">◀</a></li>
+							<li><a href="/gs25/Sub_Page/list?p=${map.prevPage }">◀</a></li>
 						</c:if>
 						<c:forEach begin='${map.firstPage }' end='${map.lastPage }' step='1' var='i'>
 							<c:choose>
@@ -100,13 +100,13 @@
 									<li>${i }</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="/gs25/guestbook/list?p=${i }">${i }</a></li>
+									<li><a href="/gs25/Sub_Page/list?p=${i }">${i }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 
 						<c:if test='${map.nextPage > 0 }'>
-							<li><a href="/gs25/guestbook/list?p=${map.nextPage }">▶</a></li>
+							<li><a href="/gs25/Sub_Page/list?p=${map.nextPage }">▶</a></li>
 						</c:if>
 					</ul>
 				</div>

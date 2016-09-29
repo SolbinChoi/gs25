@@ -26,6 +26,8 @@ public class GuestbookVo {
 	public void setReg_date(String reg_date) {
 		this.reg_date = reg_date;
 	}
+	
+	
 	public Long getUser_no() {
 		return user_no;
 	}
@@ -51,6 +53,7 @@ public class GuestbookVo {
 		return "GuestbookVo [no=" + no + ", content=" + content + ", reg_date=" + reg_date + ", user_no=" + user_no
 				+ ", store_no=" + store_no + ", email=" + email + "]";
 	}
+	
 	
 	
 	
