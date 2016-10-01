@@ -17,12 +17,19 @@ import kr.ac.sungkyul.gs25.service.GuestbookService;
 import kr.ac.sungkyul.gs25.vo.GuestbookVo;
 import kr.ac.sungkyul.gs25.vo.UserVo;
 
+/* 
+	2016-10-01  
+	작업자 : 최솔빈
+	개발 상황 : 완료   
+   */
+
 @Controller
 @RequestMapping("/Sub_Page")
 public class GuestbookController {
 	@Autowired
 	private GuestbookService guestbookService;
 	
+	//리스트 가져오기
 	@RequestMapping("/list")
 	public String list(Model model, 
 			@RequestParam(value="p",required=true, defaultValue="1") Long page,
@@ -32,6 +39,7 @@ public class GuestbookController {
 		
 		return "/Sub_Page/guestbook_list";
 	}
+	// 방명록 작성
 	@RequestMapping(value="/write", method=RequestMethod.POST)
 	public String write(@ModelAttribute GuestbookVo vo,
 			@RequestParam(value="store_no",required=true, defaultValue="") Long store_no,
@@ -48,6 +56,8 @@ public class GuestbookController {
 		guestbookService.write(vo);
 		return "redirect:/Sub_Page/list";
 	}
+	
+	// 선택된 방명록 삭제
 	@RequestMapping("/delete")
 	public String delete(@ModelAttribute GuestbookVo vo){
 		guestbookService.delete(vo);

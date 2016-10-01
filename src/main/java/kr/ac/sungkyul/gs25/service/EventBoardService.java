@@ -28,7 +28,7 @@ public class EventBoardService {
 	    long blockCount = (long) Math.ceil((double) pageCount / LIST_BLOCKSIZE); // 블록 갯수
 	    long currentBlock = (long) Math.ceil((double) page / LIST_BLOCKSIZE); // 현재 블록
 	    
-	 // page값 검증
+	    // 1. page값 검증
 	    if (page < 1) {
 	       page = 1L;
 	       currentBlock = 1;
@@ -37,7 +37,7 @@ public class EventBoardService {
 	       currentBlock = (int) Math.ceil((double) page / LIST_BLOCKSIZE);
 	    }
 	    
-	    // 5. 페이지를 그리기 위한 값 계산
+	    // 2. 페이지를 그리기 위한 값 계산
 	    long startPage = currentBlock == 0 ? 1 : (currentBlock - 1) * LIST_BLOCKSIZE + 1;
 	    long endPage = (startPage - 1) + LIST_BLOCKSIZE;
 	    long prevPage = (currentBlock > 1) ? (currentBlock - 1) * LIST_BLOCKSIZE : 0;
@@ -45,7 +45,8 @@ public class EventBoardService {
 	    
 		List<EventBoardVo> list = eventboardDao.getList(page, LIST_PAGESIZE, keyword); // no, image, title, count
 		Map<String, Object> map = new HashMap<String, Object>();
-		 
+		
+		// 3. Map 객체에 저장
 		map.put("sizeList", LIST_PAGESIZE);  // 리스트 되는 갯 수
 		map.put("firstPage", startPage); // 시작 페이지
 		map.put("lastPage", endPage); // 끝 페이지
@@ -60,20 +61,27 @@ public class EventBoardService {
 		return map;
 	}
 	
+	// 이벤트 글 보기
 	public EventBoardVo view(Long no){
 		EventBoardVo vo = eventboardDao.view(no);
 		return vo;
 	}
 	
+	// 조회수 증가
 	public void viewcountup(Long no){
 		eventboardDao.updateViewCount(no);
 	}
+	
+	// 선택된 이벤트의 첨부파일 삭제
 	public void delete(Long no){
 		eventboardDao.delete(no);
 	}
+	
+	// 선택된 이벤트 정보 삭제
 	public void delete(EventBoardVo vo){
 		eventboardDao.delete(vo);
 	}
+	// 이벤트의 첨부파일 작성
 	public void write(EventBoardVo vo, MultipartFile file)throws Exception{
 		Long no = eventboardDao.insert(vo); // 게시글 삽입 후 해당 번호를 얻어옴
 		
@@ -86,12 +94,13 @@ public class EventBoardService {
 		// save name
 		String saveName = orgName;
 		
-		// path(경로)
+		// path(경로) 정하기
 		String path="C:\\Users\\S401-18\\solworkspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\gs25\\assets\\images\\eventboard";
 		
 		// 이미지 URL
 		String imageurl = "/gs25/assets/images/eventboard/"+saveName;
 		
+		// 첨부파일 객체에 담기
 		AttachFileEvVO attachFileEvVO = new AttachFileEvVO();
 		attachFileEvVO.setNo(no); // FK
 		attachFileEvVO.setPath(path);
@@ -100,8 +109,10 @@ public class EventBoardService {
 		attachFileEvVO.setFileSize(fileSize);
 		attachFileEvVO.setImageurl(imageurl);
 		
+		// 첨부파일 삽입
 		eventboardDao.insertAttachEvFile(attachFileEvVO);
 		
+		// 파일 복사 및 이동
 		File target = new File(path, saveName);
 		FileCopyUtils.copy(file.getBytes(), target); // 문자형의 데이터를 전송하기 위해 .getBytes() 이용해 바이트로 변환
 	}

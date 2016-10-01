@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 import kr.ac.sungkyul.gs25.dao.GuestbookDao;
 import kr.ac.sungkyul.gs25.vo.GuestbookVo;
 
+/* 
+2016-10-01  
+작업자 : 최솔빈
+개발 상황 : 완료   
+*/
+
 @Service
 public class GuestbookService {
 
@@ -25,7 +31,7 @@ public class GuestbookService {
 	    long blockCount = (long) Math.ceil((double) pageCount / LIST_BLOCKSIZE); // 블록 갯수
 	    long currentBlock = (long) Math.ceil((double) page / LIST_BLOCKSIZE); // 현재 블록
 	    
-	 // page값 검증
+	    // 1. Page값 검증
 	    if (page < 1) {
 	       page = 1L;
 	       currentBlock = 1;
@@ -34,14 +40,16 @@ public class GuestbookService {
 	       currentBlock = (int) Math.ceil((double) page / LIST_BLOCKSIZE);
 	    }
 	    
-	    // 5. 페이지를 그리기 위한 값 계산
+	    // 2. 페이지를 그리기 위한 값 계산
 	    long startPage = currentBlock == 0 ? 1 : (currentBlock - 1) * LIST_BLOCKSIZE + 1;
 	    long endPage = (startPage - 1) + LIST_BLOCKSIZE;
 	    long prevPage = (currentBlock > 1) ? (currentBlock - 1) * LIST_BLOCKSIZE : 0;
 	    long nextPage = (currentBlock < blockCount) ? currentBlock * LIST_BLOCKSIZE + 1 : 0;
 	    
+	    // 3. 리스트 가져오기
 	    List<GuestbookVo> list = guestbookDao.getList(page, LIST_PAGESIZE, store_no);
 		
+	    // 4. Map 객체에 저장
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sizeList", LIST_PAGESIZE); // 리스트 되는 갯 수
 		map.put("firstPage", startPage); // 시작 페이지
@@ -56,11 +64,11 @@ public class GuestbookService {
 
 		return map;
 	}
-	
+	// 방명록 작성
 	public void write(GuestbookVo vo){
 		guestbookDao.insert(vo);
 	}
-	
+	// 선택된 방명록 삭제
 	public void delete(GuestbookVo vo){
 		guestbookDao.delete(vo);
 	}

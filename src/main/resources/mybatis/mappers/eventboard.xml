@@ -2,16 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="eventboard">
-
+<!--  
+ /* 
+  2016-10-01  작업자 : 최솔빈
+      개발 상황 : 완료   */ 
+ -->
+   
+  	<!-- 전체 이벤트 게시물 총 수 가져오기 -->
 	<select id="getCal" resultType="java.lang.Integer">
 	<![CDATA[
 	select count(*) from event
 	]]>
 	</select>
 	
+	 <!--이벤트 게시물 리스트  --> 
 	<select id="getList" parameterType="map" resultType="eventboardvo">
-	<choose>
-	 <when test="#{keyword==''}">
+	
 	<![CDATA[
 	select * from
 	(select a.*, rownum rn from
@@ -22,8 +28,10 @@
 	from event a, eventfile b where a.no=b.no order by no desc) a)
 	where #{page_top}<=rn and rn<=#{page_bottom}
 	]]>
-	</when>
-	<otherwise>
+	</select>
+	
+	<!-- 검색된 이벤트 리스트  --> 
+	<select id="getListKeyword" parameterType="map" resultType="eventboardvo">
 	<![CDATA[
 	select * from
 	(select a.*, rownum rn from
@@ -34,10 +42,9 @@
 	from event a, eventfile b where a.no=b.no and title like #{keyword} order by no desc) a)
 	where #{page_top}<=rn and rn<=#{page_bottom}
 	]]>
-	</otherwise>
-	</choose>
 	</select>
 	
+	<!-- 선택된 게시물 보기 -->
 	<select id="selectBoard" parameterType="java.lang.Long" resultType="eventboardvo">
 	<![CDATA[
 	select a.no,a.title,b.imageurl,a.STARTDATE,a.ENDDATE from event a, eventfile b 
@@ -45,12 +52,14 @@
 	]]>
 	</select>
 	
+	<!-- 선택된 게시물 조회수 증가 -->
 	<update id="updateCount" parameterType="java.lang.Long">
 	<![CDATA[
 	update event set count = count + 1 where no =#{no}
 	]]>
 	</update>
 	
+	<!-- 선택된 게시물 삭제 -->
 	<delete id="deleteFile" parameterType="java.lang.Long">
 	<![CDATA[
 	delete from eventfile where no=#{no}
@@ -61,6 +70,8 @@
 	delete from event where no=#{no}
 	]]>
 	</delete>
+	
+	<!-- 이벤트의 제목, 기간 삽입 -->
 	<insert id="insert" parameterType="eventboardvo">
 	<selectKey resultType="java.lang.Long" keyProperty="no" order="BEFORE">
 		<![CDATA[
@@ -82,7 +93,7 @@
 		)
 	]]>
 	</insert>
-	
+	<!-- 이벤트의 첨부파일 삽입 -->
 	<insert id="insertAttachEvFile" parameterType="kr.ac.sungkyul.gs25.vo.AttachFileEvVO">
 	<![CDATA[
 	insert into eventfile( 
