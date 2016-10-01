@@ -25,7 +25,7 @@
 	</when>
 	<otherwise>
 	<![CDATA[
-	sselect * from
+	select * from
 	(select a.*, rownum rn from
 	(select a.no, a.title, b.imageurl, 
 	to_char(a.startdate, 'yyyy-mm-dd') as startdate, 
@@ -40,8 +40,8 @@
 	
 	<select id="selectBoard" parameterType="java.lang.Long" resultType="eventboardvo">
 	<![CDATA[
-	select no, title,startdate, enddate, store_no, user_no 
-	from event where no=#{no}
+	select a.no,a.title,b.imageurl,a.STARTDATE,a.ENDDATE from event a, eventfile b 
+	where a.no = b.no and a.no=#{no}
 	]]>
 	</select>
 	
@@ -51,12 +51,16 @@
 	]]>
 	</update>
 	
-	<delete id="delete" parameterType="java.lang.Long">
+	<delete id="deleteFile" parameterType="java.lang.Long">
+	<![CDATA[
+	delete from eventfile where no=#{no}
+	]]>
+	</delete>
+	<delete id="deleteVo" parameterType="eventboardvo">
 	<![CDATA[
 	delete from event where no=#{no}
 	]]>
 	</delete>
-	
 	<insert id="insert" parameterType="eventboardvo">
 	<selectKey resultType="java.lang.Long" keyProperty="no" order="BEFORE">
 		<![CDATA[

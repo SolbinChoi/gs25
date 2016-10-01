@@ -32,8 +32,7 @@
 							</ul>
 						</div>
 						<div id="event_content">
-							<img src="https://hpsimg.gsretail.com/medias/sys_master/images/images/hea/h36/8926807162910.jpg"
-							alt="GS25 PARTY">
+							<img src="${vo.imageurl }">
 						</div>
 					</div>
 				</div>

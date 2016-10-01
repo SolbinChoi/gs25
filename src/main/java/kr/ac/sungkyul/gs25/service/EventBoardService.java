@@ -71,7 +71,9 @@ public class EventBoardService {
 	public void delete(Long no){
 		eventboardDao.delete(no);
 	}
-	
+	public void delete(EventBoardVo vo){
+		eventboardDao.delete(vo);
+	}
 	public void write(EventBoardVo vo, MultipartFile file)throws Exception{
 		Long no = eventboardDao.insert(vo); // 게시글 삽입 후 해당 번호를 얻어옴
 		

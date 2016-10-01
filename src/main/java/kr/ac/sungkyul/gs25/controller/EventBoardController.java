@@ -41,8 +41,11 @@ public class EventBoardController {
 		return "/Sub_Page/event_view";
 	}
 	@RequestMapping("/event_delete")
-	public String delete(@RequestParam("no") Long no){
-		eventboardService.delete(no);
+	public String delete(HttpSession session,
+			@RequestParam("no") Long no,
+			@ModelAttribute EventBoardVo vo){
+		eventboardService.delete(no); // 이벤트 첨부파일 삭제
+		eventboardService.delete(vo); // 이벤트 게시글 삭제
 		return "redirect:/Sub_Page/eventlist";
 	}
 	@RequestMapping(value="/event_write", method= RequestMethod.GET)

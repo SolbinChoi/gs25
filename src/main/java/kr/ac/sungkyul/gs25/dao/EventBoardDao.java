@@ -48,7 +48,10 @@ public class EventBoardDao {
 		sqlSession.update("eventboard.updateCount", no);
 	}
 	public void delete(Long no){
-		sqlSession.delete("eventboard.delete", no);
+		sqlSession.delete("eventboard.deleteFile", no);
+	}
+	public void delete(EventBoardVo vo){
+		sqlSession.delete("eventboard.deleteVo", vo);
 	}
 	public Long insert(EventBoardVo vo){ // 이벤트 게시글 : 번호, 제목, 날짜 삽입
 		sqlSession.insert("eventboard.insert", vo);

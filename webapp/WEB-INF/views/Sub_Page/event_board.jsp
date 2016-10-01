@@ -35,10 +35,10 @@
 		
 		<div id="event_slide">
 			<div id="slideShowImages"> <!--  slideShowImages는 원하는 슬라이드 쇼 이미지를 가리키는 <img> 요소를 포함 -->
-		    <img src="/gs25/assets/images/eventboard/event1.jpg" alt="Slide 1" />
-		    <img src="/gs25/assets/images/eventboard/event2.jpg" alt="Slide 2" />
-		    <img src="/gs25/assets/images/eventboard/event3.jpg" alt="Slide 3" />    
-		    <img src="/gs25/assets/images/eventboard/event4.jpg" alt="Slide 4" />
+		    <c:forEach var='vo' items='${map.list }' varStatus='s'>
+		    
+		    <img src="${vo.imageurl }" alt="${s.index }" />
+		    </c:forEach>
 			</div>  
 			<img src="/gs25/assets/images/eventboard/stop2.png" id="slideShowButton"></img> <!-- Optional button element. -->
 			
