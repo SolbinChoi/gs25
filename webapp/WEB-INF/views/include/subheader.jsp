@@ -21,6 +21,7 @@
 					<ul>
 					<c:choose>
 					<c:when test='${empty sessionScope.authUser }'>
+					<li><a href="/gs25/main">GS25 홈페이지</a></li>
 					<li><a href="/gs25/user/loginform">로그인</a></li>
 					<li><a href="/gs25/user/joinform">회원가입</a></li>
 					</c:when>

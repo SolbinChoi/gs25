@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link href="/gs25/assets/css/login.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/gs25/js/jquery/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="/gs25/assets/js/jquery/jquery-1.9.0.js"></script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />

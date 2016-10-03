@@ -4,6 +4,7 @@ public class EmailVo {
     private String subject;
     private String content;
     private String receiver;
+    
 	public String getSubject() {
 		return subject;
 	}

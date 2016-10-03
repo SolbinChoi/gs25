@@ -105,7 +105,7 @@ input[type="submit"]{
     color: #FFFFFF;
 	font: 1.0em "맑은 고딕", 돋움, 굴림;
 }
-.board-form .bottom a, .board-form .bottom input[type="submit"] {
+#mainForm .bottom a, .board-form .bottom input[type="submit"] {
     float: right;
     padding: 10px 20px 10px 20px;
     border: 1px solid #555;

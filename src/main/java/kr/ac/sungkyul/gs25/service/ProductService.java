@@ -62,8 +62,31 @@ public class ProductService {
 		map.put("nexttoPage", nexttoPage);
 		map.put("prevtoPage", prevtoPage);
 		
-		
 		return map;
+	}
+    
+    public List<ProductVo> getSubDate(){
+    	List<ProductVo> list = productdao.getSubDate();
+    	System.out.println("service: "+list.toString());
+    	return list;
+	}
+    
+//    public List<ProductVo> getSubPopular(){
+//    	List<ProductVo> list = productdao.getSubPopular();
+//    	System.out.println("service: "+list.toString());
+//    	return list;
+//	}
+    
+    public List<ProductVo> getSubNew(){
+    	List<ProductVo> list = productdao.getSubNew();
+    	System.out.println("service: "+list.toString());
+    	return list;
+	}
+    
+    public List<ProductVo> getSubReco(){
+    	List<ProductVo> list = productdao.getSubReco();
+    	System.out.println("service: "+list.toString());
+    	return list;
 	}
 
 }

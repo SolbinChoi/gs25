@@ -38,6 +38,17 @@ form, select, input, textarea {
    position:inherit;
    float: right;
 }
+.login2{
+    width: 320px;
+    height: 350px;
+    position: inherit;
+    float: right;
+    padding: 10px 0;
+    border-top: solid #fff000;
+    border-bottom: solid 3px #0091df;
+    /*border-top: solid #0091df;
+    border-bottom: solid 5px #96daf7;*/
+}
 #title{
    padding-top:50px;
    padding-bottom:20px;
@@ -129,3 +140,13 @@ input[type=text], input[type=password] {
 .pro .title{color:#222;text-align:center;  display:block;position: absolute;top: 175px;left: 50%;margin-left: -90px;width: 100%; }
 .pro .title .mt{font-size:13px;display:block; font-style:normal;}
 .pro .title em{margin-top:5px;font-size:22px;display:block; font-style:normal;}
+
+#login3{
+	float: right;
+}
+#aleft{
+	margin-right: 10px;
+}
+#aright{
+	margin-right:10px;
+}

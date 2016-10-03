@@ -34,7 +34,7 @@ function getThumbnailPrivew(html, $target) {
 				<h1>이벤트</h1>
 			</div>
 			<div id="board">
-			<form class="board-form" method="post" autocomplete="off"
+			<form id="mainForm" method="post" autocomplete="off"
 						action="/gs25/Sub_Page/event_write?userno=${authUser.no }"
 						enctype="multipart/form-data">
 			<table class="tbl-ex">
@@ -50,6 +50,12 @@ function getThumbnailPrivew(html, $target) {
 			<tr>
 				<td class="label">시작일</td>
 				<td><input type="text" name="startdate" value=""></td>
+				<td>	
+				<select id="dateYear" onChange="setDay()">
+    			</select>년&nbsp;
+	   			<select id="dateMonth" onChange="setDay()"></select>월&nbsp;
+	   			 <select id="dateDay"></select>일&nbsp;
+	   			 </td>
 			</tr>
 			<tr>
 				<td class="label">종료일</td>
