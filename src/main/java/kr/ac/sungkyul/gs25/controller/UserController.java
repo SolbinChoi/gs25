@@ -29,25 +29,12 @@ public class UserController {
 		return "user/joinform";
 	}
 	
-	// 서브페이지 회원가입 폼 이동
-	@RequestMapping("/Subjoinform")
-	public String Subjoinform(){
-		return "user/sub_joinform";
-	}
-	
 	// 회원가입
 	@RequestMapping("/join")
 	public String join(@ModelAttribute UserVo vo){
 		System.out.println("join: "+vo.toString());
 		userService.join(vo);
 		return "redirect:/user/joinsuccess";
-	}
-	// 서브페이지 회원가입
-	@RequestMapping("/Subjoin")
-	public String Subjoin(@ModelAttribute UserVo vo){
-		System.out.println("join: "+vo.toString());
-		userService.join(vo);
-		return "redirect:/user/Subjoinsuccess";
 	}
 	
 	// 회원가입 성공

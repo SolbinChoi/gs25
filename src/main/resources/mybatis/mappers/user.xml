@@ -3,9 +3,10 @@
 
 <mapper namespace="user">
 
-<insert id="insert" parameterType="userVo">
+<insert id="insert" parameterType="uservo">
 	<![CDATA[
-	insert into users values(seq_users.nextval, #{name},#{email},#{password}, to_date(#{birth},'yyyy-mm-dd'),#{gender},#{address},#{phone}, 0,#{position},#{store_no})
+	insert into users values(seq_users.nextval, #{name}, #{email}, #{password}, 
+	to_date(#{birth},'yyyy-mm-dd'), #{gender}, #{address}, #{phone}, 0,#{position},#{store_no})
 	]]>
 </insert>
 
@@ -21,7 +22,7 @@
 	]]>
 </select>
 
-<update id="update" parameterType="userVo">
+<update id="update" parameterType="uservo">
  <choose>
   <when test="#{password==''}">
    <![CDATA[

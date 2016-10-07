@@ -48,7 +48,7 @@
 		<div id="event_board">
 			<form id="search_form" action="/gs25/Sub_Page/eventlist" method="get">
 				<input type="text" id="kwd" name="kwd" value="${map.keyword }">
-				<input type="submit" value="찾기">
+				<input type="submit" class="search" value="찾기">
 			</form>
 			<table class="tbl-ex">
 			<tr>

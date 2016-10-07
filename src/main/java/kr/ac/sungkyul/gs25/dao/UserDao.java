@@ -82,7 +82,6 @@ public class UserDao {
 	}
 	
 	public void savelink(String link, String email) {
-		
 		Long user_no = sqlSession.selectOne("user.checkEmail",email); // no 가져옴
 		Integer state = 0;
 		

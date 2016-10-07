@@ -50,12 +50,6 @@ function getThumbnailPrivew(html, $target) {
 			<tr>
 				<td class="label">시작일</td>
 				<td><input type="text" name="startdate" value=""></td>
-				<td>	
-				<select id="dateYear" onChange="setDay()">
-    			</select>년&nbsp;
-	   			<select id="dateMonth" onChange="setDay()"></select>월&nbsp;
-	   			 <select id="dateDay"></select>일&nbsp;
-	   			 </td>
 			</tr>
 			<tr>
 				<td class="label">종료일</td>
@@ -73,7 +67,7 @@ function getThumbnailPrivew(html, $target) {
 			
 			<div class="bottom">
 				<a href="/gs25/Sub_Page/eventlist">취소</a> 
-				<input type="submit" value="등록">
+				<input type="submit" class="register" value="등록">
 			</div>	
 			</form>
 			</div>

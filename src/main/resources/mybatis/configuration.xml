@@ -13,5 +13,7 @@
 		<mapper resource="mybatis/mappers/guestbook.xml" />
 		<mapper resource="mybatis/mappers/eventboard.xml" />
 		<mapper resource="mybatis/mappers/board.xml" />
+		<mapper resource="mybatis/mappers/product.xml" />
+		<mapper resource="mybatis/mappers/test.xml" />
 	</mappers>
 </configuration>

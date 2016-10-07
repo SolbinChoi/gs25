@@ -40,7 +40,7 @@
 			<div class="gnbwrap">
 				<div class="gnbw">
 					<h1 class="logo">
-						<a href="/gs25/Sub_Page/sub_index">GS25</a>
+						<a href="/gs25/sub/main">GS25</a>
 					</h1>
 					<div class="gnb" id="gnb_menu">
 						<ul>
@@ -54,7 +54,7 @@
 									<a href="/gs25/map/list">매장검색</a>
 								</h2></li>
 							<li><h2>
-									<a href="/gs25/">상품</a>
+									<a href="/gs25/product/list">상품</a>
 								</h2>
 						</ul>
 					</div>

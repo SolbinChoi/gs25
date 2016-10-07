@@ -24,7 +24,7 @@
 		<div class="market_list">
 		<div class="markey_list_sub">
 			<ul class="market_list_area">
-				<li><a href="/gs25/Sub_Page/sub_index?store_no=4" class="on">서울</a></li>
+				<li><a href="#" class="on">서울</a></li>
 				<li><a href="#">경기</a></li>
 				<li><a href="#">인천</a></li>
 				<li><a href="#">강원</a></li>
@@ -36,12 +36,11 @@
 			</ul>
 
 			<ul class="market_list_point">
-				<li><a href="#" class="on">지점1</a></li>
+				<li><a href="/gs25/sub/main?store_no=4" class="on">지점1</a></li>
 				<script language="JavaScript">
 					for (i = 0; i < 27; i++) {
 						document.write("<li><a href='#'>지점"+i+"</a></li>")
 					}
-
 				</script>
 			</ul>
 

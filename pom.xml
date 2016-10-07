@@ -106,6 +106,12 @@
 	        <version>4.2.6.RELEASE</version>
 		</dependency>
 
+	<!-- XML parsing -->
+		<dependency>
+	        <groupId>net.sf.sociaal</groupId>
+	        <artifactId>xmlpull-xpp3</artifactId>
+	        <version>3.0.0.20130526</version>
+   		</dependency>
 
 	</dependencies>
 

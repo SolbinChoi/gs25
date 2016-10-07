@@ -42,12 +42,35 @@
 					</c:when>
 					<c:otherwise>
 						<div class="login2">
-							<div id="login2">
-								<p>방문해주셔 감사합니다.</p>
+						<c:choose>
+							<c:when test='${"FEMALE" == authUser.gender }'>
+								<div id="login4_1">
+									<p id="username">${authUser.name } 님</p>
+									<div id = "login5">
+										<input type="image" id="userbutton" src="/gs25/assets/images/login/coins.png">
+										<p id="point">포인트&nbsp;${authUser.point }점</p>
+										<input type="image" id="userbutton" src="/gs25/assets/images/login/cart.png">
+										<p id="point">찜목록&nbsp;${authUser.point }개</p>
+									</div>
+									<p id="endP">아무개 매장에 찾아 주셔서 감사합니다.</p>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div id="login4">
+									<p id="username">${authUser.name } 님</p>
+									<div id = "login5">
+										<input type="image" id="userbutton" src="/gs25/assets/images/login/coins.png">
+										<p id="point">포인트&nbsp;${authUser.point } 점</p>
+										<input type="image" id="userbutton" src="/gs25/assets/images/login/cart.png">
+										<a href="/gs25/" id="userbutton" src="/gs25/assets/images/login/cart.png"></a>
+										<p id="point">찜목록&nbsp;${authUser.point } 개</p>
+									</div>
+									<p id="endP">아무개 매장에 찾아 주셔서 감사합니다.</p>
+								</div>
+							</c:otherwise>
+							</c:choose>
 							</div>
-							<p>로그인하셨습니다.</p>
-						</div>
-					</c:otherwise>
+							</c:otherwise>
 				</c:choose>
 			</div>
 		</div>
@@ -69,7 +92,7 @@
 						<li>
 							<div class='sbbox pro'>
 								<span class='tip typ1'><span>${countList }</span></span>
-								<a href='#'><img src='${vo.producturl }'></a>
+								<a href="/gs25/product/view?no=${vo.no }&name=${vo.name}"><img src='${vo.imageurl }'></a>
 								<span class='title'>
 								<em class='mt'>${vo.maker})${vo.name }</em><em>${vo.price }원</em>
 								</span>
@@ -84,7 +107,7 @@
 								<li>
 								<div class='sbbox pro'>
 								<span class='tip typ1'><span>"+i+"</span></span>
-								<a href='/gscvs/ko/products/event-goods'><img src='http://gs25appimg.gsretail.com/imgsvr/item/GD_8801056076719_002.jpg' alt='Y)오렌지스파클 상품'></a>
+								<a href='/gs25/product/view'><img src='http://gs25appimg.gsretail.com/imgsvr/item/GD_8801056076719_002.jpg' alt='Y)오렌지스파클 상품'></a>
 								<span class='title'>
 								<em class='mt'>유어스)롯데오렌지스파클</em><em>1,700원</em>
 								</span>
@@ -101,7 +124,7 @@
 						<li>
 							<div class='sbbox pro'>
 								<span class='tip typ1'><span>${countList }</span></span>
-								<a href='#'><img src='${vo3.producturl }'></a>
+								<a href="/gs25/product/view?no=${vo3.no }&name=${vo3.name}"><img src='${vo3.imageurl }'></a>
 								<span class='title'>
 								<em class='mt'>${vo3.maker})${vo3.name }</em><em>${vo3.price }원</em>
 								</span>
@@ -117,7 +140,7 @@
 						<li>
 							<div class='sbbox pro'>
 								<span class='tip typ1'><span>${countList }</span></span>
-								<a href='#'><img src='${vo.producturl }'></a>
+								<a href="/gs25/product/view?no=${vo.no }&name=${vo.name}"><img src='${vo.imageurl }'></a>
 								<span class='title'>
 								<em class='mt'>${vo.maker})${vo.name }</em><em>${vo.price }원</em>
 								</span>
@@ -127,7 +150,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 <script>

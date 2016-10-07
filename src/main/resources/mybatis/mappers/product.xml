@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="product">
+
+<!-- imageurl 정보 얻기 -->
+	<select id="getTotalCount" resultType="java.lang.Integer">
+		select count(*) from product
+	</select>
+	
+	<!-- 게시물 리스트 가져오기 -->
+	<select id="getList" parameterType="map" resultType="kr.ac.sungkyul.gs25.vo.ProductVo">
+   <![CDATA[
+   select * from(
+   	select c.*,rownum rn from(
+   		select 
+   		    a.no,
+   			a.name,
+   			a.price,
+   			to_char(a.reg_date,'yyyy.mm.dd') as reg_date,
+   			TO_CHAR(a.EXPIRY_DATE,'YYYY.MM.DD') as expiry_date,
+   			a.maker,
+   			a.category,
+   			b.IMAGEURL from product a, boardsfilepr b where a.NO=b.NO) c) 
+   	where #{page_start}<=rn and rn<=#{page_end}
+   ]]>
+   </select>
+   
+     <!--검색된 게시물 리스트 가져오기  -->
+   	<select id="getListKeyword" parameterType="map" resultType="kr.ac.sungkyul.gs25.vo.ProductVo">
+   <![CDATA[
+  	select * from(
+  		select c.*,rownum rn from(
+  			select 
+  			       a.no,
+  				   a.NAME,
+  				   a.PRICE,to_char(a.reg_date,'yyyy.mm.dd'),
+  				   to_char(a.EXPIRY_DATE,'yyyy-mm-dd'),
+  				   a.maker,
+  				   a.category,
+  				   d.imageurl from product a, productkind b, boardsfilepr d 
+  					where a.KIND_NO=b.NO and a.NO=d.NO and (a.NAME like #{keyword} or b.KIND like #{keyword}) 
+  		order by price desc, a.EXPIRY_DATE asc) c) 
+  	where #{page_start}<=rn and rn<=#{page_end}
+   ]]>
+   </select>
+
+
+	<!-- 상품 등록 -->
+	<insert id="insertBoard" parameterType="kr.ac.sungkyul.gs25.vo.ProductVo">
+
+		<selectKey resultType="java.lang.Long" keyProperty="no" order="BEFORE">
+       	<![CDATA[
+       		SELECT seq_product.nextVal as no FROM DUAL
+       	]]>
+		</selectKey>
+
+		<![CDATA[	
+			insert into product(
+				no, name, price,reg_date,expiry_date,maker,kind_no,category)
+			values
+			(
+				#{no},
+				#{name},
+				#{price},
+				#{reg_date},
+				#{expiry_date},
+				#{maker},
+				#{kind_no},
+				#{category}
+			)
+		]]>
+	</insert>
+	
+	<!--첨부파일 삽입  -->
+	<insert id="insertAttachPrFile" parameterType="kr.ac.sungkyul.gs25.vo.AttachFilePrVo">
+		<![CDATA[
+			insert into boardsfilepr(
+				fNO, no, path, orgName, saveName, fileSize,imageurl
+			)
+			values (
+				seq_boardsfilepr.nextVal, #{no}, #{path}, #{orgName}, #{saveName},#{fileSize} ,#{imageurl}
+			)
+		]]>
+	</insert>
+	
+	<!-- imageurl 정보 얻기 -->
+	<select id="List" 
+		resultType="kr.ac.sungkyul.gs25.vo.AttachFilePrVo">
+			<![CDATA[
+		select imageurl from boardsfilepr
+			]]>
+	</select>
+	
+	<!-- 상품 첨부파일 삭제 -->
+	<delete id="deleteproductfile" parameterType="java.lang.Long">
+	<![CDATA[
+	delete from boardsfilepr where no=#{no}
+	]]>
+	</delete>
+	
+	<!-- 상품 삭제 -->
+	<delete id="deleteproduct" parameterType="java.lang.Long">
+		<![CDATA[
+		delete from product where no=#{no}
+		]]>
+	</delete>
+	
+	<!-- 상품 서브리스트 (유통기한) -->
+	<select id="getSubDate" resultType="kr.ac.sungkyul.gs25.vo.ProductVo">
+		<![CDATA[
+		SELECT c.no, c.name, c.price, c.reg_date, c.expiry_date, c.maker, c.IMAGEURL 
+		FROM (SELECT a.no, a.name, a.price, a.reg_date, a.expiry_date, a.maker, b.IMAGEURL
+  		FROM product a, boardsfilepr b where a.no = b.no and expiry_date > sysdate ORDER BY expiry_date) c WHERE rownum < 5
+		]]>
+	</select>
+	
+	<!-- 상품 서브리스트 (신상품) -->
+	<select id="getSubNew" resultType="kr.ac.sungkyul.gs25.vo.ProductVo">
+		<![CDATA[
+		 SELECT c.no,c.name, c.price, c.reg_date, c.expiry_date, c.maker, c.IMAGEURL 
+		 FROM (SELECT a.no, a.name, a.price, a.reg_date, a.expiry_date, a.maker, b.IMAGEURL 
+  		 FROM product a, boardsfilepr b  where a.no = b.no ORDER BY reg_date desc) c WHERE rownum < 5
+		]]>
+	</select>
+	
+	<!-- 상품 서브리스트 (랜덤추천) -->
+	<select id="getSubReco" resultType="kr.ac.sungkyul.gs25.vo.ProductVo">
+		<![CDATA[
+		 SELECT c.no, c.name, c.price, c.reg_date, c.expiry_date, c.maker, c.IMAGEURL
+  		 FROM(select a.no, a.name, a.price, a.reg_date, a.expiry_date, a.maker, b.IMAGEURL 
+ 		 FROM product a, boardsfilepr b  where a.no = b.no order by DBMS_RANDOM.RANDOM) c WHERE rownum < 5
+		]]>
+	</select>
+	
+	<!-- 상품 상세정보 -->
+	<select id="searchproduct" parameterType="long" resultType="kr.ac.sungkyul.gs25.vo.ProductVo">
+		<![CDATA[
+		 SELECT a.no, a.name, a.price,  to_char(a.expiry_date,'yyyy/mm/dd') as expiry_date, a.maker, b.IMAGEURL 
+		 FROM product a, boardsfilepr b  where a.no = b.no and a.no=#{no }
+		]]>
+	</select>
+
+</mapper>
