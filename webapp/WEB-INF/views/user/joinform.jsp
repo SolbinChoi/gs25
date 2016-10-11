@@ -301,7 +301,7 @@
 				      return false; 
 				}
 			}
-			$.ajax({
+			$.ajax({	
 				url: "CheckEmail",
 				type: "POST",
 				data: {"email":email},

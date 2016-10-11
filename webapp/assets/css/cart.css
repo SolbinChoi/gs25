@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+@import "gs25site.css";
+
+#cart_list{
+	margin: 0 auto; width: 1500px;
+}
+#cart_wrap{
+		margin-left:290px;
+}
+#cart_header{
+	margin:50px 0 50px;
+}
+#txt_header{
+	margin-top:20px
+}
+#cartboard{
+	float:left;
+}
+#cartlist{
+	float:left;
+}
+#product{
+	margin-top: 5px;
+    margin-left: 75px;
+    width: 200px;
+    height: 180px;
+}
+#cart_li{
+	margin-left:10px;
+	float: left; 
+	top: 50px; 
+	left: 192px; 
+	z-index: 3; 
+	border: 1px solid rgb(215, 215, 215); 
+	height: 220px; 
+	width: 350px;
+}
+.infowrap {
+    text-align: center;
+}
+#productView_content_dd_02{
+	float:left;
+}
+
+#right{
+	margin-left:410px;
+}
+#risk{
+	margin-left:40px;
+	margin-bottom:30px;
+}
+div.pager {
+	margin:50px 0;
+    width: 950px;
+    float: left;
+    text-align: center;
+}
+
+div.pager ul li {
+    display: inline;
+    margin: 5px 0;
+    width: 20px;
+    font-weight: bold;
+}
+div.pager ul li.selected {
+    text-decoration: underline;
+    color: #f00;
+}

@@ -140,5 +140,12 @@
 		 FROM product a, boardsfilepr b  where a.no = b.no and a.no=#{no }
 		]]>
 	</select>
+	
+	<select id="maintainCheck" parameterType="cartvo" resultType="cartvo">
+		<![CDATA[
+		select * from cart 
+		where user_no=#{user_no} and product_no=#{product_no}
+		]]>
+	</select>
 
 </mapper>

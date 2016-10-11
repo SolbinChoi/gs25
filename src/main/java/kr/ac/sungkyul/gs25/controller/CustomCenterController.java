@@ -31,15 +31,19 @@ public class CustomCenterController {
 	@Autowired
 	CustomCenterService customservice;
 
+	//고객센터 게시물 리스트
 	@RequestMapping("/list")
 	public String list(Model model, @RequestParam(value = "p", required = true, defaultValue = "1") String page,
-			@RequestParam(value = "kwd", required = false, defaultValue = "") String keyword) {
-		Map<String, Object> map = customservice.list(page, keyword);
+			@RequestParam(value = "kwd", required = false, defaultValue = "") String keyword)
+	{
+		//게시물 리스트
+		Map<String, Object> map = customservice.list(page, keyword);		
 		model.addAttribute("map", map);
-
-		return "/Main_Page/custom_board";
+	
+		return "Main_Page/custom_board";
 	}
 
+	//고객센터 글쓰기 폼 이동
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String writeform(HttpSession session) {
 
@@ -50,25 +54,29 @@ public class CustomCenterController {
 		return "/Main_Page/custom_write";
 	}
 
-	@RequestMapping("/write")
+	//고객센터 글쓰기 이벤트
+	@RequestMapping(value="/write",method=RequestMethod.POST)
 	public String write(@ModelAttribute CustomBoardVo vo, HttpSession session, MultipartFile file) throws Exception {
-
-		// System.out.println(file.getOriginalFilename());
 
 		if (session == null) {
 			return "redirect:/main";
 		}
-
+		
+		//사용자 세션 정보 얻어오기
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if (authUser == null) {
 			return "redirect:/main";
 		}
+		
 		vo.setUserNo(authUser.getNo());
-		customservice.write(vo, file);
+		
+		//글쓰기를 작업할 때 객체와,file정보를 넘김
+		customservice.write(vo,file);
 
 		return "redirect:/custom/list";
 	}
 
+	//고객센터 글쓰기 삭제
 	@RequestMapping("/delete")
 	public String delete(HttpSession session, 
 			@RequestParam("groupNo") Integer no, 
@@ -79,49 +87,64 @@ public class CustomCenterController {
 			return "redirect:/main";
 		}
 
+		//사용자 세션 정보 얻어오기
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if (authUser == null) {
 			return "redirect:/main";
 		}
-		customservice.delete(no,orderno); // 첨부파일 삭제
 		
-		customservice.delete(vo); // 게시물 삭제
+		//게시물 첨부파일 삭제
+		customservice.delete(no,orderno);
+
+		//게시물 삭제
+		customservice.delete(vo);
 
 		return "redirect:/custom/list";
 	}
 
+	//고객센터 보기 폼 이동
 	@RequestMapping("/viewform")
 	public String viewfrom(HttpSession session,
-			@RequestParam(value = "no", required = true, defaultValue = "1") Long no, 
+			@RequestParam(value = "no", required = false, defaultValue = "1") Long no,
 			@RequestParam("groupNo") Integer groupNo,
 			Model model) {
-
+		
+		System.out.println("그룹번호"+groupNo);
 		if (session == null) {
 			return "redirect:/main";
 		}
 		
+		//사용자 세션 정보 얻어오기
 		UserVo authUser=(UserVo)session.getAttribute("authUser");
 		if(authUser==null){
 			return "redirect:/main";
 		}
 		
+		//사용자 세션의 번호값을 얻기
 		Long authno = authUser.getNo();
 		if( authno ==null){
 			return "redirect:/main/list";
 		}
-		CustomBoardVo DeterminVo =customservice.userno(groupNo); // 사용자 그룹 번호 판별
+		
+		// 사용자 그룹 번호 판별
+		CustomBoardVo DeterminVo =customservice.userno(groupNo); 
 		Long userno=DeterminVo.getUserNo();
 		
-		CustomBoardVo vo = customservice.boardinfo(no); // 해당 번호의 게시물 정보
-		AttachFileVO attachFileVO = customservice.selectAttachFileByNO(no); // 해당 번호의 파일 모든 정보(view)
+		//게시물의 정보 얻기
+		CustomBoardVo vo = customservice.boardinfo(no);
 
-		if (vo == null) { 
+		//첨부파일의 정보 얻기
+		AttachFileVO attachFileVO = customservice.selectAttachFileByNO(no);
+
+		if (vo == null) {
 			return "redirect:/custom/list";
 		}
 		
-		customservice.viewcountup(no); // 조회수 증가
+		//게시물 뷰 카운트 증가
+		customservice.viewcountup(no);
 		
-	    if(authno==1){ //사용자가 관리자일 때
+		 //사용자가 관리자일 때
+	    if(authno==1){
 	    	vo = customservice.boardinfo(no);
 			attachFileVO = customservice.selectAttachFileByNO(no);
 			model.addAttribute("vo", vo);
@@ -129,49 +152,51 @@ public class CustomCenterController {
 			return "/Main_Page/custom_view";
 		}
 	    
-		if(authno!=userno){ //로그인한 사용자번호와 작성자의 번호가 다를때 권한 위배 표시
+	    //로그인한 사용자번호와 작성자의 번호가 다를때 권한 위배 표시
+		if(authno!=userno){ 
 			return "redirect:/custom/right";
 		}
 		
 		model.addAttribute("vo", vo);
 		model.addAttribute("attachFileVO", attachFileVO);
+		
 		return "/Main_Page/custom_view";
 	}
 
+	//고객센터 수정 폼 이동
 	@RequestMapping("/modifyform")
-	public String modifyform(HttpSession session, 
-			@RequestParam("no") Long no, 
-			Model model) {
+	public String modifyform(HttpSession session, @RequestParam("no") Long no, Model model) {
 
 		if (session == null) {
 			return "redirect:/main";
 		}
 
+		//사용자 세션의 정보 얻기
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if (authUser == null) {
 			return "redirect:/main";
 		}
 
+		//게시물의 정보 얻기
 		CustomBoardVo vo = customservice.boardinfo(no);
 		model.addAttribute("vo", vo);
 
 		return "/Main_Page/custom_modify";
 	}
 
+	//고객센터 글쓰기 수정 이벤트
 	@RequestMapping("/modify")
-	public String modify(HttpSession session, 
-			@RequestParam("no") Long no, 
-			@ModelAttribute CustomBoardVo vo) {
+	public String modify(HttpSession session, @RequestParam("no") Long no, @ModelAttribute CustomBoardVo vo) {
 
 		if (session == null) {
 			return "redirect:/main";
 		}
 
+		//사용자 세션의 정보 얻기
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if (authUser == null) {
 			return "redirect:/main";
 		}
-		
 		vo.setNo(no);
 
 		customservice.modify(vo);
@@ -179,83 +204,91 @@ public class CustomCenterController {
 		return "redirect:/custom/list";
 	}
 
+	//고객센터 답글 달기 폼 이동
 	@RequestMapping("/replyform")
-	public String replyform(HttpSession session, 
-			@RequestParam("no") Long no,
-			Model model) {
+	public String replyform(HttpSession session, @RequestParam("no") Long no, Model model) {
 
 		if (session == null) {
 			return "redirect:/main";
 		}
 
+		//사용자 세션의 정보 얻기
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if (authUser == null) {
 			return "redirect:/main";
 		}
-
-		CustomBoardVo vo = customservice.boardinfo(no); // 해당 번호의 게시물 정보
+		
+		//게시물 정보 얻기
+		CustomBoardVo vo = customservice.boardinfo(no);
 		model.addAttribute("vo", vo);
-		System.out.println(vo);
+
+
 		return "/Main_Page/custom_reply";
 	}
 	
+	//고객센터 답글 달기 이벤트
 	@RequestMapping("/reply")
 	public String reply(
 			HttpSession session,
 			@ModelAttribute CustomBoardVo vo,
-			MultipartFile file) throws Exception{
+			MultipartFile file) throws Exception {
 		
 		if(session==null){
 			return "redirect:/main";
 		}
 		
+		//사용자 세션의 정보 얻기
 		UserVo authUser=(UserVo)session.getAttribute("authUser");
 		if(authUser==null){
 			return "redirect:/main";
 		}
 		
-		int depth=vo.getDepth()+1; // 글 깊이 증가
-		int groupOrderno=vo.getGroupOrderNo()+1; // 그룹 내 순서 증가
-		int groupNo=vo.getGroupNo(); // 그룹 번호 저장
+		//게시물 깊이, 그룹 내 순서 1씩 증가
+		int depth=vo.getDepth()+1;
+		int groupOrderno=vo.getGroupOrderNo()+1;
+		int groupNo=vo.getGroupNo();
 		
-		// 증가 세팅
-		vo.setDepth(depth); 
-		vo.setGroupOrderNo(groupOrderno); 
+
+		vo.setDepth(depth);
+		vo.setGroupOrderNo(groupOrderno);
 		vo.setGroupNo(groupNo);
 		
-		customservice.updatereplyCount(groupNo, groupOrderno); // 증가 세팅
+		//중간에 들어오는 게시물 순서 정렬
+		customservice.updatereplyCount(groupNo, groupOrderno);
 		
-		customservice.reply(vo, file);
-		
+		//답글 달기 이벤트 시 객체와 파일 정보 넘김
+		customservice.reply(vo,file);
 		
 		return "redirect:/custom/list";
 	}
 	
+	//권한 위배시 발생되는 이벤트
 	@RequestMapping("/right")
 	public String right(){
 		return "/Main_Page/custom_right";
 	}
 	
-	//파일다운로드
-	@RequestMapping(value = "download", method = RequestMethod.GET)
-	public void downloadFile(Long fNO, HttpServletResponse res) throws Exception {
+		//파일다운로드
+		@RequestMapping(value = "download", method = RequestMethod.GET)
+		public void downloadFile(Long fNO, HttpServletResponse res) throws Exception {
 			
-		AttachFileVO attachFileVO = customservice.selectAttachFileByFNO(fNO);
+			//첨부파일에 대한 정보를 가져오기
+			AttachFileVO attachFileVO = customservice.selectAttachFileByFNO(fNO);
 			
-		String saveName = attachFileVO.getSaveName(); // 저장할 파일 이름
-		String orgName = attachFileVO.getOrgName(); // 원래 파일 이름
-			    
-		res.setContentType("application/download");
-		res.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(orgName,"UTF-8") +"\"");
-		OutputStream resOut = res.getOutputStream();
+			String saveName = attachFileVO.getSaveName();
+			String orgName = attachFileVO.getOrgName();
 			
-		FileInputStream fin = new FileInputStream("C:\\upload\\"+saveName);
-		FileCopyUtils.copy(fin, resOut);
+			//다운로드 세팅
+			res.setContentType("application/download");
+			res.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(orgName,"UTF-8") +"\"");
+			OutputStream resOut = res.getOutputStream();
+			
+			FileInputStream fin = new FileInputStream("c:\\upload\\"+saveName);
+			FileCopyUtils.copy(fin, resOut);
 				
-		fin.close();
+			fin.close();
 			    
-	}
-	
+		}
 	
 
 }

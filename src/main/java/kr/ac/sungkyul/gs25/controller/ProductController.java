@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.sungkyul.gs25.service.ProductService;
+import kr.ac.sungkyul.gs25.vo.CartVo;
 import kr.ac.sungkyul.gs25.vo.NblogVo;
 import kr.ac.sungkyul.gs25.vo.ProductVo;
 import kr.ac.sungkyul.gs25.vo.UserVo;
@@ -89,11 +90,28 @@ public class ProductController {
 	@RequestMapping(value="/view", method=RequestMethod.GET)
 	public String productView(Model model,
 			@RequestParam(value= "no") Long no,
-			@RequestParam(value="name") String name){
-			
+			@RequestParam(value="name") String name,
+			HttpSession session){ // 상품 번호를 가져옴
+		
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null){
+		Long user_no = authUser.getNo();
+		
+		CartVo checkVo = new CartVo();
+		checkVo = productservice.maintainCheck(user_no, no);
+		model.addAttribute("checkVo", checkVo);
+		
+		
 		ProductVo vo = productservice.productInfo(no);
 		model.addAttribute("prodvo", vo);
-			
+		
+		}else{
+		ProductVo vo = productservice.productInfo(no);
+		model.addAttribute("prodvo", vo);
+		}
+		
 		List<NblogVo> nvo = productservice.searchNBlog(name);
 		model.addAttribute("nvo", nvo);
 			

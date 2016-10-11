@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="/gs25/assets/css/product.css" rel="stylesheet"
-	type="text/css"><script type="text/javascript"
-	src="/gs25/assets/js/jquery/jquery-1.9.0.js"></script><title>Insert title here</title>
+<link href="/gs25/assets/css/product.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/gs25/assets/css/sweetalert.css">
+<script type="text/javascript" src="/gs25/assets/js/jquery/jquery-1.9.0.js"></script>
+<script src="/gs25/assets/js/sweetalert.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
@@ -52,7 +52,22 @@
 							</ul>
 							<span id="txt1">고객님 위 제품은 어떠세요?아래 후기를 통해 참고하실 수 있습니다.^^</span>
 						</dd>
+						
 						<dd class="productView_content_dd_02">
+						<div id="load">
+							<c:if test="${not empty authUser}">
+							<c:choose>
+								<c:when test='${empty checkVo.user_no}'>
+									<button id="btn1">찜하기</button>
+									<button id="btn2" class="hide">찜해제</button>
+								 </c:when>
+								 <c:otherwise>
+									<button id="btn2">찜해제</button>
+									<button id="btn1" class="hide">찜하기</button>
+								</c:otherwise>
+							</c:choose>
+							</c:if>
+						</div>
 							<span class="product_price"> <strong>${prodvo.price }</strong><span>원</span></span>
 						</dd>
 					</dl>
@@ -104,5 +119,59 @@
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
+<script>
+$(function() {
+	$("#btn1").on("click", function(){
+		console.log('click');
+		var product_no = ${prodvo.no };
+		$.ajax({
+			url: "/gs25/cart/write",
+			type: "POST",
+			data: {"product_no":product_no},
+			dataType: "text",
+			success : function(result){
+				console.log('리절트!');
+				
+				 if(result == "1"){
+					sweetAlert("찜하기 완료!");
+					$("#btn1").addClass("hide");
+					$("#btn2").removeClass("hide");
+					
+				} 
+				
+			},
+			"error": function(jsXHR, status, e){
+				console.error("error:"+status+":"+e);
+			}
+		});
 
+	});
+	
+	$("#btn2").on("click", function(){
+		var product_no = ${prodvo.no };
+		$.ajax({
+			url: "/gs25/cart/relieve",
+			type: "POST",
+			data: {"product_no":product_no},
+			dataType: "text",
+			success: function(result){
+				console.log('dkqjd');
+				if(result == "1"){
+					//$(this).siblings("button").removeClass("hide");
+					sweetAlert("찜해제!");
+					$("#btn2").addClass("hide");
+					$("#btn1").removeClass("hide");
+				}
+					
+					
+			},
+			"error": function(jsXHR, status, e){
+				console.error("error:"+status+":"+e);
+			}
+	
+		});
+	
+	});
+});
+</script>
 </html>

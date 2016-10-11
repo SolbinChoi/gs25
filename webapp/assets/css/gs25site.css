@@ -4,7 +4,7 @@
 
 /* reset */
 *				{ margin:0; padding:0 }
-body			{ font:0.9em "맑은 고딕", 돋움, 굴림; font-family:NanumBarunGothic !important;}
+body			{ font:0.9em; font-family:NanumBarunGothic !important;}
 ul, ol, li			{ list-style-type: none }
 
 /* layout */

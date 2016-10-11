@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.ac.sungkyul.gs25.vo.AttachFilePrVo;
+import kr.ac.sungkyul.gs25.vo.CartVo;
 import kr.ac.sungkyul.gs25.vo.ProductVo;
 
 /*
@@ -81,7 +82,6 @@ public class ProductDao {
 	public List<ProductVo> getSubDate() {
 			
 		List<ProductVo> list=sqlSession.selectList("product.getSubDate");
-		System.out.println("유통기한 "+list);
 		return list;
 	}
 		
@@ -97,15 +97,22 @@ public class ProductDao {
 	public List<ProductVo> getSubReco() {
 			
 		List<ProductVo> list=sqlSession.selectList("product.getSubReco");
-		System.out.println("추천 " + list);
 		return list;
 	}
 		
 		//상품 상세정보 출력
 	public ProductVo productInfo(Long no){
 		ProductVo vo = sqlSession.selectOne("product.searchproduct",no);
-		System.out.println("상품상세정보: " + vo.toString());
 		return vo;
 		}
+	
+	public CartVo maintainCheck(Long user_no, Long product_no){
+		CartVo checkVo = new CartVo();
+		checkVo.setUser_no(user_no);
+		checkVo.setProduct_no(product_no);
+		checkVo = sqlSession.selectOne("product.maintainCheck", checkVo);
+		return checkVo;
+	}
+
 
 }

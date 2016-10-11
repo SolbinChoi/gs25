@@ -19,20 +19,23 @@ public class MapController {
 	@Autowired
 	MapService mapservice;
 	
+	//매장 검색 리스트
 	@RequestMapping("/list")
 	public String maplist(Model model,
 			@RequestParam(value="p",required=true,defaultValue="1") String page,
-			@RequestParam(value="kwd",required=false, defaultValue="") String keyword,
+			@RequestParam(value="kwd",required=true, defaultValue="") String keyword,
 			@RequestParam(value="no", required=true, defaultValue="1") Long no){
-		
-		
-		Map<String, Object> map=mapservice.list(page, keyword); //게시판 리스트
-		System.out.println(map);
-		
-		Map<String, Object> map2=mapservice.maplist(keyword, no); //지도 리스트
+			
+		//게시판 리스트
+		Map<String, Object> map=mapservice.list(page, keyword); 
+			
+		//지도 리스트
+		Map<String, Object> map2=mapservice.maplist(keyword, no); 
 
-		
-		model.addAttribute("map", map);
+		//게시판 리스트 객체 넘기기
+		model.addAttribute("map", map); 
+			 
+		//지도 리스트 객체 넘기기
 		model.addAttribute("map2", map2);
 
 		return "/Main_Page/store_search";
