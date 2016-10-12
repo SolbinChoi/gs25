@@ -8,6 +8,7 @@ public class AttachFilePrVo {
 	private String saveName;
 	private long fileSize;
 	private String imageurl;
+	
 	public Long getfNO() {
 		return fNO;
 	}
