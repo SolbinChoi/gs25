@@ -22,7 +22,7 @@ public class EventBoardService {
 	private final int LIST_PAGESIZE = 5; // 리스팅되는 게시물의 수
 	private final int LIST_BLOCKSIZE = 5; // 페이지 리스트에서 표시되는 페이지 수
 	
-	public Map<String, Object> list(Long page, String keyword){
+	public Map<String, Object> list(Long page, String keyword, Long store_no){
 		long totalCount= eventboardDao.getCal();  // 전체 게시물 갯수
 		long pageCount = (long) Math.ceil((double) totalCount / LIST_PAGESIZE); // 페이지 갯수
 	    long blockCount = (long) Math.ceil((double) pageCount / LIST_BLOCKSIZE); // 블록 갯수
@@ -43,7 +43,7 @@ public class EventBoardService {
 	    long prevPage = (currentBlock > 1) ? (currentBlock - 1) * LIST_BLOCKSIZE : 0;
 	    long nextPage = (currentBlock < blockCount) ? currentBlock * LIST_BLOCKSIZE + 1 : 0;
 	    
-		List<EventBoardVo> list = eventboardDao.getList(page, LIST_PAGESIZE, keyword); // no, image, title, count
+		List<EventBoardVo> list = eventboardDao.getList(page, LIST_PAGESIZE, keyword, store_no); // no, image, title, count
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		// 3. Map 객체에 저장
@@ -95,7 +95,7 @@ public class EventBoardService {
 		String saveName = orgName;
 		
 		// path(경로) 정하기
-		String path="C:\\Users\\S401-18\\solworkspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\gs25\\assets\\images\\eventboard";
+		String path="C:\\Users\\S401-18\\solworkspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\gs25\\assets\\images\\eventboard";
 		
 		// 이미지 URL
 		String imageurl = "/gs25/assets/images/eventboard/"+saveName;

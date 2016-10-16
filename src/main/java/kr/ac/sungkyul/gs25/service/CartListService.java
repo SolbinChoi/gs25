@@ -90,4 +90,10 @@ public class CartListService {
 	public void deleteCart(Long user_no, Long product_no) {
 		cartlistDao.deleteCart(user_no, product_no);
 	}
+	
+	//찜목록 총 개수
+	public int getCount(){
+		int TotalCount=cartlistDao.getCal();
+		return TotalCount;
+	}
 }

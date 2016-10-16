@@ -93,19 +93,20 @@ public class ProductDao {
 		return list;
 	}
 		
-		//서브메인 - 추천별 4개
+	//서브메인 - 추천별 4개
 	public List<ProductVo> getSubReco() {
 			
 		List<ProductVo> list=sqlSession.selectList("product.getSubReco");
 		return list;
 	}
 		
-		//상품 상세정보 출력
+	//상품 상세정보 출력
 	public ProductVo productInfo(Long no){
 		ProductVo vo = sqlSession.selectOne("product.searchproduct",no);
 		return vo;
 		}
 	
+	// 카트가 담겨있는지 정보를 가져옴
 	public CartVo maintainCheck(Long user_no, Long product_no){
 		CartVo checkVo = new CartVo();
 		checkVo.setUser_no(user_no);

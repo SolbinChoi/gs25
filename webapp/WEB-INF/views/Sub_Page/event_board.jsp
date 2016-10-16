@@ -46,7 +46,7 @@
 	
 	<div id="Board_main">
 		<div id="event_board">
-			<form id="search_form" action="/gs25/Sub_Page/eventlist" method="get">
+			<form id="search_form" action="/gs25/Sub_Page/eventlist?store_no=${store_no }" method="get">
 				<input type="text" id="kwd" name="kwd" value="${map.keyword }">
 				<input type="submit" class="search" value="찾기">
 			</form>
@@ -69,7 +69,7 @@
 				<td>${vo.count }</td>
 				<td><c:choose>
 						<c:when test='${authUser.no == 2}'>
-						<a href="/gs25/Sub_Page/event_delete?no=${vo.no}" class="del">삭제</a>
+						<a href="/gs25/Sub_Page/event_delete?no=${vo.no}&store_no=${store_no}" class="del">삭제</a>
 						</c:when>
 						<c:otherwise>
 	            		&nbsp;
@@ -125,7 +125,7 @@
 			<div class="bottom">
 				<c:choose>
 				<c:when test='${authUser.no==2 }'>
-					<a href="/gs25/Sub_Page/event_write?userno=${authUser.no}" id="new-book">글쓰기</a>
+					<a href="/gs25/Sub_Page/event_write?userno=${authUser.no}&store_no=${store_no}" id="new-book">글쓰기</a>
 				</c:when>
 				<c:otherwise>
 					&nbsp;

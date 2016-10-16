@@ -221,8 +221,7 @@ public class CustomCenterController {
 		//게시물 정보 얻기
 		CustomBoardVo vo = customservice.boardinfo(no);
 		model.addAttribute("vo", vo);
-
-
+		
 		return "/Main_Page/custom_reply";
 	}
 	
@@ -256,6 +255,7 @@ public class CustomCenterController {
 		//중간에 들어오는 게시물 순서 정렬
 		customservice.updatereplyCount(groupNo, groupOrderno);
 		
+		System.out.println(vo);
 		//답글 달기 이벤트 시 객체와 파일 정보 넘김
 		customservice.reply(vo,file);
 		

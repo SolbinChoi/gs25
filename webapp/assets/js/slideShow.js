@@ -5,7 +5,7 @@ function slideShow() {
   /* GLOBALS */
 	
   var globals = {
-    slideDelay: 4000, // 지정된 슬라이드가 화면에 표시되는 시간(밀리초)
+    slideDelay: 3000, // 지정된 슬라이드가 화면에 표시되는 시간(밀리초)
     fadeDelay: 35, // 첫 슬라이드와 다음 슬라이드 간 불투명도 변경 시간 간격(밀리초)
     wrapperID: "slideShowImages", 
     buttonID: "slideShowButton",

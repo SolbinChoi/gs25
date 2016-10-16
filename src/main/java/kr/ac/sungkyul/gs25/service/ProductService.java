@@ -167,7 +167,7 @@ public class ProductService {
 		ProductVo vo = productdao.productInfo(no);
 		return vo;
 	}
-
+	// 카트가 담겨있는지 정보를 가져옴
 	public CartVo maintainCheck(Long user_no, Long product_no){
 		CartVo checkVo = productdao.maintainCheck(user_no, product_no);
 		return checkVo;

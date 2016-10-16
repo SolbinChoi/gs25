@@ -9,7 +9,7 @@ public class EventBoardVo {
 	private Long store_no;
 	private Long UserNo;
 	private String imageurl;
-	
+	private String name;
 	
 	public Long getNo() {
 		return no;
@@ -62,10 +62,19 @@ public class EventBoardVo {
 	public void setImageurl(String imageurl) {
 		this.imageurl = imageurl;
 	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	@Override
 	public String toString() {
 		return "EventBoardVo [no=" + no + ", title=" + title + ", startdate=" + startdate + ", enddate=" + enddate
-				+ ", count=" + count + ", store_no=" + store_no + ", UserNo=" + UserNo + ", imageurl=" + imageurl + "]";
+				+ ", count=" + count + ", store_no=" + store_no + ", UserNo=" + UserNo + ", imageurl=" + imageurl
+				+ ", name=" + name + "]";
 	}
 	
 	

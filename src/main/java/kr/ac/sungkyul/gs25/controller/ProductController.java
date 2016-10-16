@@ -97,8 +97,9 @@ public class ProductController {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
 		if(authUser != null){
-		Long user_no = authUser.getNo();
+		Long user_no = authUser.getNo(); // 사용자 번호를 가져옴
 		
+		// 카트 정보를 가져옴
 		CartVo checkVo = new CartVo();
 		checkVo = productservice.maintainCheck(user_no, no);
 		model.addAttribute("checkVo", checkVo);

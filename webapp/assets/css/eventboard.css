@@ -88,12 +88,12 @@ h4{
 input[type="text"]	{ 
 	padding:5px; 
 	border:1px solid #aaa; 
-	width: 750px;
+	width: 350px;
 	margin-left:20px;
 }
 input[type="file"]{
 	padding:5px; 
-	width: 750px;
+	width: 350px;
 	margin-left:20px;
 	text-align:left;
 }
@@ -103,7 +103,7 @@ input[type="file"]{
     background-color: #0080ff;
     font-weight: bold;
     color: #FFFFFF;
-	font: 1.0em "맑은 고딕", 돋움, 굴림;
+	font: 1.0em ;
 }
 #mainForm .bottom a, .board-form .bottom input[type="submit"], .register {
     float: right;
@@ -140,7 +140,7 @@ div.bottom {
     padding: 10px 20px 14px 20px;
 }
 .board-form .tbl-ex td.label {
-	text-align:right;
+	text-align:center;
 	font-weight:bold;
 	width:90px; 
 }
