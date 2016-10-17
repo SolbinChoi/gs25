@@ -20,7 +20,17 @@
 	]]>
 	</select>
 	
-
+	<select id="getListEventKeyword" parameterType="map" resultType="eventboardvo">
+	<![CDATA[
+	select * from(select c.*, rownum rn 
+	from(select a.no, a.title, to_char(a.startdate, 'yyyy-mm-dd') as startdate, 
+	to_char(a.enddate, 'yyyy-mm-dd') as enddate, a.store_no, b.name 
+	from event a, users b
+	where a.user_no=b.no) c 
+	where c.store_no=${store_no} and c.title like #{keyword}) 
+	where #{page_top}<=rn and rn<=#{page_bottom}
+	]]>
+	</select>
 	
 	<delete id="eventdelete" parameterType="java.lang.Long">
 	<![CDATA[
@@ -64,4 +74,9 @@
 	]]>
 	</select>
 	
+	<delete id="delete" parameterType="guestbookvo">
+	<![CDATA[
+		delete from guestbook where no=#{no}
+	]]>
+	</delete>
 </mapper>

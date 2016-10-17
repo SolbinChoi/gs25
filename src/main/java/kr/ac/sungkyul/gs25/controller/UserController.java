@@ -112,17 +112,17 @@ public class UserController {
 	
 	// 아이디 찾기
 	@RequestMapping("/idFind")
-	public String idFind(@ModelAttribute UserVo vo,Model model){
+	public String idFind(@ModelAttribute UserVo vo, Model model){
 		String email = userService.idfind(vo); // 받아온 정보를 이용하여 이메일 값을 가져옴
-		
+		System.out.println(email);
 		if(email == null){	// 계정 정보가 없을 경우
 			Boolean result = false;
 			model.addAttribute("result", result);
-			return "user/findInfo";
+			return "/user/findInfo";
 		}
 		
 		model.addAttribute("email",email);
-		return "user/idresult";
+		return "/user/idresult";
 	}
 	//비밀번호 찾기 검사
 	@ResponseBody

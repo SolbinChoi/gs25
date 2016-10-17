@@ -33,7 +33,8 @@ public class GuestbookController {
 	@RequestMapping("/list")
 	public String list(Model model, 
 			@RequestParam(value="p",required=true, defaultValue="1") Long page,
-			@RequestParam(value="store_no",required=true, defaultValue="") Long store_no){
+			@RequestParam("store_no") Long store_no){
+		
 		Map<String, Object> map = guestbookService.list(page, store_no); // email이랑 방명록을 추가
 		model.addAttribute("map", map);
 		
@@ -54,13 +55,15 @@ public class GuestbookController {
 		vo.setUser_no(authUser.getNo());
 		vo.setStore_no(store_no);
 		guestbookService.write(vo);
-		return "redirect:/Sub_Page/list";
+		return "redirect:/Sub_Page/list?store_no="+store_no;
 	}
 	
 	// 선택된 방명록 삭제
 	@RequestMapping("/delete")
-	public String delete(@ModelAttribute GuestbookVo vo){
+	public String delete(@ModelAttribute GuestbookVo vo,
+			@RequestParam("store_no") Long store_no){
+		
 		guestbookService.delete(vo);
-		return "redirect:/Sub_Page/list";		
+		return "redirect:/Sub_Page/list?store_no="+store_no;		
 	}
 }

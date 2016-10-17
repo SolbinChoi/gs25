@@ -126,7 +126,9 @@
 							
 									<p class="menu_tit">관리자 메뉴</p>
 									<ul class="my_lst">
-										<li><a href="/gs25/manage/subManage?store_no=${store_no }" class="my_m4">관리창</a>
+										<li><a href="/gs25/manage/eventList?store_no=${store_no }" class="my_m4">이벤트</a>
+										</li>
+										<li><a href="/gs25/guestmanage/guestList?store_no=${store_no }" class="my_m4">방명록</a>
 										</li>
 									</ul>
 								</c:when>

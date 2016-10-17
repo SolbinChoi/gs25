@@ -10,7 +10,7 @@ public class CustomBoardVo {
 	private Integer groupOrderNo;
 	private Integer depth;
 	private Long UserNo;
-	private String date;
+	private String reg_date;
 	private String name;
 	private String UserName;
 	private Integer orderNo;
@@ -65,12 +65,7 @@ public class CustomBoardVo {
 	public void setUserNo(Long userNo) {
 		UserNo = userNo;
 	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
+	
 	public String getName() {
 		return name;
 	}
@@ -95,12 +90,19 @@ public class CustomBoardVo {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
+	public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
+	}
 	@Override
 	public String toString() {
 		return "CustomBoardVo [no=" + no + ", title=" + title + ", content=" + content + ", count=" + count
 				+ ", groupNo=" + groupNo + ", groupOrderNo=" + groupOrderNo + ", depth=" + depth + ", UserNo=" + UserNo
-				+ ", date=" + date + ", name=" + name + ", UserName=" + UserName + ", orderNo=" + orderNo + ", keyword="
-				+ keyword + "]";
+				+ ", reg_date=" + reg_date + ", name=" + name + ", UserName=" + UserName + ", orderNo=" + orderNo
+				+ ", keyword=" + keyword + "]";
 	}
 	
 	

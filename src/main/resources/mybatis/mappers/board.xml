@@ -25,7 +25,7 @@
    					b.name,
    					a.user_no as UserNo,
    					a.view_count as count,
-   					to_char(a.reg_date,'yyyy-mm-dd pm hh:mi:ss') as regdate,
+   					to_char(a.reg_date,'yyyy-mm-dd pm hh:mi:ss') as reg_date,
    					a.depth,
    					a.GROUP_NO as groupNo,
    					a.ORDER_NO as groupOrderNo 
@@ -48,7 +48,7 @@
    					b.name,
    					a.user_no as UserNo,
    					a.view_count as count,
-   					to_char(a.reg_date,'yyyy-mm-dd pm hh:mi:ss') as regdate,
+   					to_char(a.reg_date,'yyyy-mm-dd pm hh:mi:ss') as reg_date,
    					a.depth,
    					a.GROUP_NO as groupNo,
    					a.ORDER_NO as groupOrderNo 
@@ -132,7 +132,7 @@
 		
 		<![CDATA[	
 			insert into boards(
-				no, title, content,view_count,group_no,order_no,depth,reg_Date,user_no
+				no, title, content,view_count,group_no,order_no,depth,reg_date,user_no
 			)
 			values
 			(
@@ -162,7 +162,7 @@
 
 		<![CDATA[	
 			insert into boards(
-				no, title, content,view_count,group_no,order_no,depth,reg_Date,user_no
+				no, title, content,view_count,group_no,order_no,depth,reg_date,user_no
 			)
 			values
 			(

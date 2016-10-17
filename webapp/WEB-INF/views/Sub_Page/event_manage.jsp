@@ -9,8 +9,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="/gs25/assets/css/manage.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="/gs25/assets/css/sweetalert.css">
+<link href="/gs25/assets/css/menubar.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/gs25/assets/js/jquery/jquery-1.9.0.js"></script>
 <script src="/gs25/assets/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="/gs25/assets/js/menubar.js"></script>
+<style>
+#STATICMENU {
+	margin: 0 150px;
+	padding: 0pt;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+</style>
 </head>
 <body>
 <div id="container">
@@ -19,20 +30,40 @@
 
 		<div id="manage_wrap">
 		
+			<div id="menubar">
+				<div id="STATICMENU">
+					<div class="myarea_wrap">
+						<div class="mymenu">
+							<div class="couwrap_off">
+								<p>
+									서비스 이용을<br> 위해 로그인<br> 해주세요 <br>
+								</p>
+								<input type="button" class="btn_log" value="로그인"
+									onclick="location.href='/gs25/user/loginform';">
+							</div>
+							<ul class="my_lst">
+								<li><a href="/gs25/product/list" class="my_m2">상품</a></li>
+								<li><a href="/gs25/Sub_Page/eventlist" class="my_m1">이벤트</a></li>
+							</ul>
+							
+						</div>
+						<a href="#" class="top">TOP</a>
+					</div>
+				</div>
+			</div>
+			
+		
 			<div id="tap_content">
 			    <ul class="tabs">
-			     <li class="active" id="tap0" rel="tab0">관리 메뉴</li>
-			     <li id="tap1" rel="tab1">이벤트관리</li>
-			     <li id="tap2" rel="tab2"><a href="/gs25/manage/guestList?store_no=${store_no }">방명록관리</a></li>
+			     <li class="active" id="tap0" rel="tab0">이벤트 창</li>
+
 			    </ul>
 			    
 			    <div class="tab_container">
+			    
 			      <div id="tab0" class="tab_content">
-			     	 즐!!!!!!!!!!!
-			      </div>
-			      
-			      <div id="tab1" class="tab_content">
-			        	<form id="search_form" action="/gs25/manage/eventlist?store_no=${store_no }" method="get">
+			        	<form id="search_form" action="/gs25/manage/eventList" method="get">
+			        	<input type="hidden" name="store_no" value="${store_no }">
 							<input type="text" id="kwd" name="kwd" value="${map.keyword }">
 							<input type="submit" value="찾기">
 						</form>
@@ -41,7 +72,7 @@
 							전체 회원수 : <span>${map.totalCount }</span>
 						</h4>
 						
-						<table class="tbl-ex">
+						<table class="tbl-ex" id="tblList">
 							<tr>
 								<th>번호</th>
 								<th>제목</th>
@@ -70,22 +101,22 @@
 						</table>
 						
 			            <ul>
-			                <li><a href="/gs25/main">메인으로 돌아가기</a>
+			                <li><a href="/gs25/sub/main?store_no=${store_no }">메인으로 돌아가기</a>
 			                </li>
 			            </ul>
 			            
 			            
 			            <!-- begin:paging -->
-			            <!-- 
+			         
 							<div class="pager">
 								<ul>
 
 									<c:if test="${map.prevtoPage >= 0 }">
-										<li><a href="/gs25/manage/eventlist?p=${map.prevtoPage }">◀◀</a></li>
+										<li><a href="/gs25/manage/eventList?p=${map.prevtoPage }">◀◀</a></li>
 									</c:if>
 
 									<c:if test="${map.prevPage >= 0 }">
-										<li><a href="/gs25/manage/userManage?p=${map.prevPage }">◀</a></li>
+										<li><a href="/gs25/manage/eventList?p=${map.prevPage }">◀</a></li>
 									</c:if>
 
 									<c:forEach begin='${map.firstPage }' end='${map.lastPage }'
@@ -98,36 +129,25 @@
 												<li>${i }</li>
 											</c:when>
 											<c:otherwise>
-												<li><a href="/gs25/manage/userManage?p=${i }">${i }</a></li>
+												<li><a href="/gs25/manage/eventList?p=${i }">${i }</a></li>
 											</c:otherwise>
 										</c:choose>
 									</c:forEach>
 
 									<c:if test='${map.nextPage > 0 }'>
-										<li><a href="/gs25/manage/userManage?p=${map.nextPage }">▶</a></li>
+										<li><a href="/gs25/manage/eventList?p=${map.nextPage }">▶</a></li>
 									</c:if>
 									<c:if test='${map.nexttoPage > 0 }'>
-										<li><a href="/gs25/manage/userManage?p=${map.nexttoPage }">▶▶</a></li>
+										<li><a href="/gs25/manage/eventList?p=${map.nexttoPage }">▶▶</a></li>
 									</c:if>
 
 								</ul>
 							</div>
-						 -->
+						 
 			     </div>
-			
-			        <div id="tab2" class="tab_content">
-			        	<table class="tbl-ex">
-			        	<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>등록일</th>
-								<th>작성자</th>
-								<th>&nbsp;</th>
-
-							</tr>
-			        	</table>
-			        </div>
+			<a href="/gs25/Sub_Page/event_write?userno=${authUser.no}&store_no=${store_no}" id="new-book">글쓰기</a>
 			    </div>
+			    
 			</div>
 			
 			
@@ -143,44 +163,19 @@ $(function () {
     $(".tab_content").hide();
     $(".tab_content:first").show();
     
-    $("#tap1").on("click", function(){
-    	console.log('click');
-    	var values = []; // 리스트를 받을 변수
-    	var store_no=${store_no};
-    	$.ajax({
-			url: "/gs25/manage/eventList",
-			type: "POST",
-			data: {"store_no":store_no, "page":1},
-			dataType: "text",
-			success : function(result){
-				console.log('잘갔다왔다!');
-				
-				
-				 if(map.code == "OK"){
-				
-					 
-					values = map.list;
-					sweetAlert("리스트 완료");
-					$("#tap1").addClass("active").css("color", "darkred");
-					$("#tap0").removeClass("active").css("color", "#333");
-					
-				} 
-				
-			},
-			"error": function(jsXHR, status, e){
-				console.error("error:"+status+":"+e);
-			}
-		});
-    });
-    
-	// 탭 클릭시
-   /* $("ul.tabs li").click(function () {
-        $("ul.tabs li").removeClass("active").css("color", "#333"); // active 클래스를 변경시켜주기
-        $(this).addClass("active").css("color", "darkred");
-        $(".tab_content").hide()
-        var activeTab = $(this).attr("rel");
-        $("#" + activeTab).fadeIn()
-    }); */
+    $( window ).scroll( function() {
+        if ( $( this ).scrollTop() > 200 ) {
+          $( '.top' ).fadeIn();
+        } else {
+          $( '.top' ).fadeOut();
+        }
+      } );
+      $( '.top' ).click( function() {
+        $( 'html, body' ).animate( { scrollTop : 0 }, 400 );
+        return false;
+      } );
+   
+ 
 });
 </script>
 </html>

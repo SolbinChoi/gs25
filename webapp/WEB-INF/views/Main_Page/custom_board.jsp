@@ -75,7 +75,7 @@
 	
 								<td>${vo.name }</td>
 								<td>${vo.count }</td>
-								<td>${vo.date }</td>
+								<td>${vo.reg_date }</td>
 								<td><c:choose>
 										<c:when
 											test='${(not empty authUser && authUser.no == vo.userNo) || (authUser.no==1) }'>

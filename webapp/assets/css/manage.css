@@ -129,3 +129,15 @@ div.pager ul li.selected {
     text-decoration: underline;
     color: #f00;
 }
+a#new-book	 { 
+	float:right; 
+	padding:10px 20px 10px 20px ; 
+	border:1px solid #555; 
+	border-radius:5px;
+	font-weight:bold; 
+	background-color:#E8ECF6; 
+	color:#111 
+}
+#back{
+	font-size:16px;
+}

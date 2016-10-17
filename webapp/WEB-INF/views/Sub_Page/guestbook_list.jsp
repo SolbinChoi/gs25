@@ -17,7 +17,7 @@
 		<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
 		<div id="content">
 			<div id="guestbook">
-				<form action="/gs25/Sub_Page/write?store_no=4" method="post">
+				<form action="/gs25/Sub_Page/write?store_no=${store_no }" method="post">
 				
 				<h4 id="br">
 					전체 글수 : <span>${map.totalCount }</span>
@@ -57,7 +57,7 @@
 									<td>
 									<c:choose>
 									<c:when test='${not empty authUser && authUser.no == vo.user_no }'>
-										<a href="/gs25/Sub_Page/delete?no=${vo.no }">삭제</a>
+										<a href="/gs25/Sub_Page/delete?no=${vo.no }&store_no=${store_no }">삭제</a>
 									</c:when>
 									<c:otherwise>
 										&nbsp;
