@@ -31,6 +31,10 @@ public class EventManageController {
 		if (session == null) {
 			return "redirect:/sub/main";
 		}
+		
+		//서브 메인에 상품 번호 추가
+		session.setAttribute("store_no", store_no);
+				
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if (authUser == null) {
 			return "redirect:/sub/main";

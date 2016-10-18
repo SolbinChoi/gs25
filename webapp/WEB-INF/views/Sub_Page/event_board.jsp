@@ -32,7 +32,7 @@
 		<div id="brand_main">
 			<h1>이벤트</h1>
 		</div>
-		
+		<jsp:include page="/WEB-INF/views/include/menubar.jsp" />
 		<div id="event_slide">
 			<div id="slideShowImages"> <!--  slideShowImages는 원하는 슬라이드 쇼 이미지를 가리키는 <img> 요소를 포함 -->
 		    <c:forEach var='vo' items='${map.list }' varStatus='s'>

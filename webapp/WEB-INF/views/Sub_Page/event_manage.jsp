@@ -8,20 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="/gs25/assets/css/manage.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="/gs25/assets/css/sweetalert.css">
-<link href="/gs25/assets/css/menubar.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/gs25/assets/js/jquery/jquery-1.9.0.js"></script>
-<script src="/gs25/assets/js/sweetalert.min.js"></script>
-<script type="text/javascript" src="/gs25/assets/js/menubar.js"></script>
-<style>
-#STATICMENU {
-	margin: 0 150px;
-	padding: 0pt;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-}
-</style>
+
 </head>
 <body>
 <div id="container">
@@ -30,28 +18,8 @@
 
 		<div id="manage_wrap">
 		
-			<div id="menubar">
-				<div id="STATICMENU">
-					<div class="myarea_wrap">
-						<div class="mymenu">
-							<div class="couwrap_off">
-								<p>
-									서비스 이용을<br> 위해 로그인<br> 해주세요 <br>
-								</p>
-								<input type="button" class="btn_log" value="로그인"
-									onclick="location.href='/gs25/user/loginform';">
-							</div>
-							<ul class="my_lst">
-								<li><a href="/gs25/product/list" class="my_m2">상품</a></li>
-								<li><a href="/gs25/Sub_Page/eventlist" class="my_m1">이벤트</a></li>
-							</ul>
-							
-						</div>
-						<a href="#" class="top">TOP</a>
-					</div>
-				</div>
-			</div>
-			
+		
+			<jsp:include page="/WEB-INF/views/include/menubar.jsp" />
 		
 			<div id="tap_content">
 			    <ul class="tabs">
@@ -162,20 +130,7 @@ $(function () {
 
     $(".tab_content").hide();
     $(".tab_content:first").show();
-    
-    $( window ).scroll( function() {
-        if ( $( this ).scrollTop() > 200 ) {
-          $( '.top' ).fadeIn();
-        } else {
-          $( '.top' ).fadeOut();
-        }
-      } );
-      $( '.top' ).click( function() {
-        $( 'html, body' ).animate( { scrollTop : 0 }, 400 );
-        return false;
-      } );
    
- 
 });
 </script>
 </html>

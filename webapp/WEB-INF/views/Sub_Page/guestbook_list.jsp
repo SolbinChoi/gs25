@@ -16,6 +16,8 @@
 	<div id="container">
 		<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
 		<div id="content">
+		
+		<jsp:include page="/WEB-INF/views/include/menubar.jsp" />
 			<div id="guestbook">
 				<form action="/gs25/Sub_Page/write?store_no=${store_no }" method="post">
 				
