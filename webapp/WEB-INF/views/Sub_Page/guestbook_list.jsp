@@ -91,7 +91,7 @@
 				<div class="pager">
 					<ul>
 						<c:if test="${map.prevPage > 0 }">
-							<li><a href="/gs25/Sub_Page/list?p=${map.prevPage }">◀</a></li>
+							<li><a href="/gs25/Sub_Page/list?p=${map.prevPage }&store_no=${store_no}">◀</a></li>
 						</c:if>
 						<c:forEach begin='${map.firstPage }' end='${map.lastPage }' step='1' var='i'>
 							<c:choose>
@@ -102,13 +102,13 @@
 									<li>${i }</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="/gs25/Sub_Page/list?p=${i }">${i }</a></li>
+									<li><a href="/gs25/Sub_Page/list?p=${i }&store_no=${store_no}">${i }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 
 						<c:if test='${map.nextPage > 0 }'>
-							<li><a href="/gs25/Sub_Page/list?p=${map.nextPage }">▶</a></li>
+							<li><a href="/gs25/Sub_Page/list?p=${map.nextPage }&store_no=${store_no}">▶</a></li>
 						</c:if>
 					</ul>
 				</div>

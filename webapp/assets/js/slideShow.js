@@ -19,6 +19,7 @@ function slideShow() {
     slideIndex: 0 
   }
   
+  
   /* 메인 */
   
   initializeGlobals(); // globals를 초기화하여 <div> 래퍼 요소, <img> 및 전환 단추에 대한 액세스를 제공

@@ -20,6 +20,8 @@
       border: 0.8em white solid;
       padding: 3px;
     }   
+     #prevBtn { position: absolute; left: 0; top: 10px; }
+        #nextBtn { position: absolute; right: 0; top: 10px; }
   </style>
 </head>
 <body>
@@ -40,6 +42,7 @@
 		    <img src="${vo.imageurl }" alt="${s.index }" />
 		    </c:forEach>
 			</div>  
+			
 			<img src="/gs25/assets/images/eventboard/stop2.png" id="slideShowButton"></img> <!-- Optional button element. -->
 			
 		</div>
@@ -48,6 +51,7 @@
 		<div id="event_board">
 			<form id="search_form" action="/gs25/Sub_Page/eventlist?store_no=${store_no }" method="get">
 				<input type="text" id="kwd" name="kwd" value="${map.keyword }">
+				<input type="hidden" name="store_no" value="${store_no }">
 				<input type="submit" class="search" value="찾기">
 			</form>
 			<table class="tbl-ex">
@@ -153,6 +157,8 @@
 	         : "/gs25/assets/images/eventboard/stop2.png";
 	      $(this).attr("src", src);
 	   });
+	 
+	
 }); 
 </script>
 </html>

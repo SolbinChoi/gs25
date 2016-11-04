@@ -9,18 +9,163 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>main_index</title>
 <link href="/gs25/assets/css/index.css" rel="stylesheet" type="text/css">
-<link href="/gs25/assets/css/menubar.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/gs25/assets/js/jquery/jquery-1.9.0.js"></script>
-<script type="text/javascript" src="/gs25/assets/js/menubar.js"></script>
-<style>
- #STATICMENU {
-	margin: 0 150px;
-	padding: 0pt;
-	position: absolute;
-	right: 0px;
-	top: 0px;
+<!-- 지도 -->
+ <script>
+$(function(){
+	
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	mapOption = { 
+	    center: new daum.maps.LatLng(37.5547992, 126.9684953),
+	    level: 4 // 지도의 확대 레벨
+	};
+	var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	$("#maptab1").click(function (){
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		mapOption = { 
+		    center: new daum.maps.LatLng(37.5547992, 126.9684953),
+		    level: 4 // 지도의 확대 레벨
+		};
+		var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		var positions = [
+          	<c:forEach var = 'vo' items='${mapvo }' varStatus='s'>
+          	{
+          	   content: '${vo.name}', 
+          	   latlng: new daum.maps.LatLng('${vo.localx}', '${vo.localy}')
+          	},
+          	</c:forEach>
+          ];
+          for (var i = 0; i < positions.length; i ++) {
+              // 마커를 생성합니다
+          	  var marker = new daum.maps.Marker({
+          	        map: map, // 마커를 표시할 지도
+          	        position: positions[i].latlng // 마커의 위치
+          	        
+          	    });
+          	    // 마커에 표시할 인포윈도우를 생성합니다 
+          	    var infowindow = new daum.maps.InfoWindow({
+          	        content: positions[i].content // 인포윈도우에 표시할 내용
+          	    });
+          	    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+          	    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+          	    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+          	    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+          	    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+          	}
+	});
+	
+	$("#maptab2").click(function (){
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		mapOption = { 
+		    center: new daum.maps.LatLng(37.3800181, 126.9264755),
+		    level: 4 // 지도의 확대 레벨
+		};
+		var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		var positions = [
+           	<c:forEach var = 'vo' items='${mapvo }' varStatus='s'>
+           	{
+           	   content: '${vo.name}', 
+           	   latlng: new daum.maps.LatLng('${vo.localx}', '${vo.localy}')
+           	},
+           	</c:forEach>
+           ];
+           for (var i = 0; i < positions.length; i ++) {
+               // 마커를 생성합니다
+           	  var marker = new daum.maps.Marker({
+           	        map: map, // 마커를 표시할 지도
+           	        position: positions[i].latlng // 마커의 위치
+           	        
+           	    });
+           	    // 마커에 표시할 인포윈도우를 생성합니다 
+           	    var infowindow = new daum.maps.InfoWindow({
+           	        content: positions[i].content // 인포윈도우에 표시할 내용
+           	    });
+           	    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+           	    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+           	    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+           	    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+           	    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+           	}
+	});
+	
+	$("#maptab3").click(function (){
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		mapOption = { 
+		    center: new daum.maps.LatLng(37.503463, 126.72378),
+		    level: 4// 지도의 확대 레벨
+		};
+		var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		var positions = [
+         	<c:forEach var = 'vo' items='${mapvo }' varStatus='s'>
+         	{
+         	   content: '${vo.name}', 
+         	   latlng: new daum.maps.LatLng('${vo.localx}', '${vo.localy}')
+         	},
+         	</c:forEach>
+         ];
+         for (var i = 0; i < positions.length; i ++) {
+             // 마커를 생성합니다
+         	  var marker = new daum.maps.Marker({
+         	        map: map, // 마커를 표시할 지도
+         	        position: positions[i].latlng // 마커의 위치
+         	        
+         	    });
+         	    // 마커에 표시할 인포윈도우를 생성합니다 
+         	    var infowindow = new daum.maps.InfoWindow({
+         	        content: positions[i].content // 인포윈도우에 표시할 내용
+         	    });
+         	    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+         	    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+         	    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+         	    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+         	    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+         	}
+	});
+		
+//마커를 표시할 위치와 title 객체 배열입니다 
+var positions = [
+	<c:forEach var = 'vo' items='${mapvo }' varStatus='s'>
+	{
+	   content: '${vo.name}', 
+	   latlng: new daum.maps.LatLng('${vo.localx}', '${vo.localy}')
+	},
+	</c:forEach>
+];
+for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+	  var marker = new daum.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: positions[i].latlng // 마커의 위치
+	        
+	    });
+	    // 마커에 표시할 인포윈도우를 생성합니다 
+	    var infowindow = new daum.maps.InfoWindow({
+	        content: positions[i].content // 인포윈도우에 표시할 내용
+	    });
+	    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+	    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+	    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+	    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+	    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+	}
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
 }
-</style>
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+});
+</script>
 </head>
 <body>
 
@@ -32,46 +177,8 @@
 <div class="container_index">
 		<img src="/gs25/assets/images/index/gs25_03.gif"/>
 		
-		<div id="menubar">
-			<div id="STATICMENU">
-			<div class="myarea_wrap">
-			<div class="mymenu">
-				<div class="couwrap_off">
-					<p>
-					서비스 이용을<br>
-					위해 로그인<br>
-					해주세요 <br>
-					</p>
-					<input type="button" class="btn_log" value="로그인" onclick="location.href='/gs25/user/loginform';">
-				</div>
-				<ul class="my_lst">
-					<li>
-						<a href="/gs25/map/list" class="my_m0">매장검색</a>
-					</li>
-					<li>
-						<a href="/gs25/custom/list" class="my_m1">고객센터</a>
-					</li>
-				</ul>
-				<div class="menuwrap">
-				<c:choose>
-					<c:when test='${authUser.no ==1 }'>
-					<p class="menu_tit">관리자 메뉴</p>
-					<ul class="my_lst">
-						<li>
-							<a href="/gs25/manage/userManage" class="my_m4">회원관리</a>
-						</li>
-					</ul>
-					</c:when>
-					<c:otherwise>
-					<p class="menu_tit">반가워요</p>
-					</c:otherwise>
-				</c:choose>
-				</div>
-			</div>
-			<a href="#" class="top">TOP</a>
-			</div>
-			</div>
-			</div>
+		<jsp:include page="/WEB-INF/views/include/main_menubar.jsp" />
+		
 		<div class="market_list">
 		<div class="markey_list_sub">
 			<ul class="market_list_area">

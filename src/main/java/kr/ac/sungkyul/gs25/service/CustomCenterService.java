@@ -22,7 +22,7 @@ import kr.ac.sungkyul.gs25.vo.CustomBoardVo;
 
 @Service
 public class CustomCenterService {
-	// 리스팅 되는 게시물 수
+		// 리스팅 되는 게시물 수
 		private static final int LIST_PAGESIZE = 10; 
 		// 페이지 리스트에 표시되는 페이지 수
 		private static final int LIST_BLOCKSIZE = 5; 
